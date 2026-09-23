@@ -12,18 +12,10 @@ export default function SiteHeader(){
  return <header className="siteHeader">
   <div className="wrap nav">
    <Link href="/" className="brand"><span className="logo"><PawPrint size={18}/></span><span>LAPKA</span></Link>
-   <nav className="desktopNav">
-    <Link className={path==='/catalog'?'active':''} href="/catalog">Каталог</Link>
-    <Link href="/catalog?pet=Собаки">Собакам</Link>
-    <Link href="/catalog?pet=Коти">Котам</Link>
-    <Link href="/catalog/zoobaza/hits">Популярне</Link>
-   </nav>
-   <form className="search" onSubmit={submit}><Search size={17}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Пошук товарів"/></form>
-   <div className="actions">
-    <Link className="headerIcon" href="/catalog?favorites=1" aria-label="Обране"><Heart size={18}/>{favorites.length>0&&<b>{favorites.length}</b>}</Link>
-    <AccountLink/>
-    <Link className="cartBtn" href="/checkout"><ShoppingBag size={18}/><span>Кошик</span>{count>0&&<b>{count}</b>}</Link>
-   </div>
+   <nav className="desktopNav"><Link className={path==='/catalog'?'active':''} href="/catalog">Каталог</Link><Link href="/catalog/zoobaza/hits">Популярне</Link><Link href="/account">Профіль</Link></nav>
+   <form className="search" onSubmit={submit}><Search size={17}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Пошук товарів"/><button aria-label="Шукати">Знайти</button></form>
+   <div className="actions"><Link className="headerIcon" href="/catalog?favorites=1" aria-label="Обране"><Heart size={18}/>{favorites.length>0&&<b>{favorites.length}</b>}</Link><AccountLink/><Link className="cartBtn" href="/checkout"><ShoppingBag size={18}/><span>Кошик</span>{count>0&&<b>{count}</b>}</Link></div>
   </div>
+  <form className="mobileSearch wrap" onSubmit={submit}><Search size={18}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Пошук у LAPKA"/><button>Знайти</button></form>
  </header>
 }
