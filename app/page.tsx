@@ -1,38 +1,49 @@
 'use client';
 import Link from 'next/link';
-import {ArrowRight} from 'lucide-react';
+import {ArrowRight, HeartHandshake, PackageCheck, Sparkles} from 'lucide-react';
 import ProductCard from '@/components/product-card';
 import {products} from '@/lib/products';
-import {useStore} from '@/lib/store';
 
 export default function Home(){
- const {pet}=useStore();
  return <main>
-  <section className="homeHero wrap">
-   <div className="heroCopy">
-    <div className="heroIndex">LAPKA / PET SUPPLY / UA</div>
-    <h1>Нормальні речі<br/>для <em>ваших</em> тварин.</h1>
-    <p>Без випадкових товарів і нескінченного каталогу. Зібрали базу для щоденного догляду, годування та прогулянок — з підбором під конкретного улюбленця.</p>
-    <div className="heroActions"><Link className="primary" href="/catalog">Дивитися каталог <ArrowRight size={18}/></Link><Link className="textLink" href="/pets">{pet?'Профіль '+pet.name:'Створити профіль улюбленця'}</Link></div>
-   </div>
-   <div className="heroEditorial">
-    <div className="heroStamp">01<br/><span>CURATED<br/>PET GOODS</span></div>
-    <div className="heroPet">DOG<br/>CAT<br/><b>GOOD.</b></div>
-    <div className="heroNote">{pet?pet.name+' · '+pet.age+' · '+pet.weight:'Профіль тварини = точніший підбір'}</div>
+  <section className="homeHeroSoft">
+   <div className="wrap softHeroGrid">
+    <div className="softHeroCopy">
+     <span className="heroPill"><Sparkles size={15}/> Турбота без зайвого пошуку</span>
+     <h1>Все потрібне для тих,<br/>хто чекає тебе вдома.</h1>
+     <p>Корм, догляд, амуніція й корисні дрібниці — у зрозумілому каталозі з актуальною наявністю та рекомендаціями під твого улюбленця.</p>
+     <div className="heroActions">
+      <Link className="primary" href="/catalog">Перейти в каталог <ArrowRight size={18}/></Link>
+      <Link className="secondary" href="/sign-up">Створити профіль</Link>
+     </div>
+     <div className="heroTrust">
+      <span><PackageCheck/>Дропшипінг від перевірених постачальників</span>
+      <span><HeartHandshake/>Підбір без випадкових товарів</span>
+     </div>
+    </div>
+    <div className="softHeroVisual">
+      <div className="visualOrb orbA"></div><div className="visualOrb orbB"></div>
+      <div className="heroProductCard heroProductMain"><small>для собак</small><strong>Щоденний догляд</strong><span>Корм · амуніція · іграшки</span></div>
+      <div className="heroProductCard heroProductMini"><small>для котів</small><strong>Спокійний вибір</strong><span>Раціони · миски · догляд</span></div>
+      <div className="heroBadgeFloat">LAPKA CLUB<br/><span>профіль улюбленця</span></div>
+    </div>
    </div>
   </section>
 
-  <section className="shopBy wrap">
-   <div className="sectionLabel">Купувати простіше</div>
-   <div className="shopByGrid">
-    <Link href="/catalog?pet=Собаки"><span>01</span><h3>Собаки</h3><p>Корм, амуніція, іграшки та догляд.</p></Link>
-    <Link href="/catalog?pet=Коти"><span>02</span><h3>Коти</h3><p>Раціони, миски, іграшки та щоденний догляд.</p></Link>
-    <Link href="/catalog"><span>03</span><h3>Увесь каталог</h3><p>Швидкий пошук за брендом і категорією.</p></Link>
-   </div>
+  <section className="wrap categoryStrip">
+   <Link href="/catalog?pet=Собаки"><div className="categoryIcon">🐶</div><div><b>Собакам</b><small>Корм, прогулянки, догляд</small></div><ArrowRight/></Link>
+   <Link href="/catalog?pet=Коти"><div className="categoryIcon">🐱</div><div><b>Котам</b><small>Раціони, миски, іграшки</small></div><ArrowRight/></Link>
+   <Link href="/catalog/zoobaza/hits"><div className="categoryIcon">★</div><div><b>Хіти ZooBaza</b><small>Стартова добірка постачальника</small></div><ArrowRight/></Link>
   </section>
 
-  <section className="catalog wrap featuredSection"><div className="sectionHead"><div><div className="sectionLabel">Добірка редакції</div><h2>Те, з чого варто почати.</h2></div><Link href="/catalog">Увесь каталог →</Link></div><div className="grid">{products.slice(0,8).map(p=><ProductCard key={p.id} p={p}/>)}</div></section>
+  <section className="catalog wrap featuredSection">
+   <div className="sectionHead softSectionHead"><div><span className="sectionKicker">Популярне</span><h2>З цього легко почати.</h2><p>Невелика добірка замість нескінченного каталогу.</p></div><Link className="sectionLink" href="/catalog">Увесь каталог <ArrowRight size={16}/></Link></div>
+   <div className="grid">{products.slice(0,8).map(p=><ProductCard key={p.id} p={p}/>)}</div>
+  </section>
 
-  <section className="manifesto"><div className="wrap manifestoGrid"><div className="sectionLabel">Чому LAPKA</div><h2>Ми не намагаємося продати все для всіх.</h2><div className="manifestoText"><p>Каталог будується навколо зрозумілих товарів, реальних залишків і прозорої ціни. Коли постачальники віддадуть фіди, кожна позиція матиме актуальну наявність і справжнє фото.</p><p>Профіль тварини потрібен не для ефекту, а щоб прибрати зайве: невідповідний вік, розмір або тип товару.</p></div></div></section>
+  <section className="wrap clubBanner">
+    <div><span className="heroPill">LAPKA CLUB</span><h2>Профіль, який справді спрощує покупки.</h2><p>Збережи улюбленця один раз — і магазин пам’ятатиме його вік, вагу та інші важливі деталі.</p></div>
+    <Link className="primary lightButton" href="/sign-up">Створити акаунт <ArrowRight size={18}/></Link>
+  </section>
  </main>
 }
