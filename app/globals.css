@@ -103,3 +103,178 @@ body{background:var(--paper);color:var(--ink)}
 .pricingTable strong{text-align:right}
 .pricingNote{font-size:12px;color:var(--muted);margin-top:14px}
 @media(max-width:820px){.pricingTable>div{grid-template-columns:1fr 1fr}.pricingTable>div>span{grid-column:1/-1}.pricingTable strong{text-align:left}}
+
+
+/* Warm ecommerce redesign */
+:root{
+ --bg:#f7f7f3;
+ --surface:#ffffff;
+ --surface-2:#eef2e8;
+ --text:#1f261f;
+ --muted:#6d756c;
+ --border:#dde3d9;
+ --accent:#31583c;
+ --accent-2:#dfead8;
+ --accent-soft:#edf5e9;
+ --shadow:0 12px 34px rgba(38,52,39,.08);
+}
+body{background:var(--bg);color:var(--text)}
+.wrap{width:min(1200px,calc(100% - 40px))}
+.siteHeader{background:rgba(247,247,243,.92);border-bottom:1px solid rgba(49,88,60,.12);backdrop-filter:blur(16px)}
+.nav{height:74px;gap:24px}
+.brand{font-size:19px;letter-spacing:-.03em}
+.logo{width:36px;height:36px;border-radius:12px;background:var(--accent)}
+.desktopNav{gap:22px;margin:0;font-size:13px;text-transform:none;letter-spacing:0}
+.desktopNav a{color:#596258}.desktopNav a:hover,.desktopNav .active{color:var(--text)}
+.search{max-width:none;flex:1;height:42px;border:1px solid var(--border);background:var(--surface);border-radius:14px;padding:0 13px}
+.search input{font-size:14px}
+.actions{gap:8px}
+.headerIcon,.accountLink{height:42px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border);background:var(--surface);border-radius:13px;padding:0 12px;font-size:13px;font-weight:700;position:relative}
+.headerIcon{width:42px;padding:0}
+.headerIcon b{position:absolute;right:-5px;top:-5px;min-width:18px;height:18px;padding:0 4px;background:var(--accent);color:#fff;border-radius:999px;font-size:10px;display:grid;place-items:center}
+.cartBtn{height:42px;border-radius:13px;background:var(--accent);padding:0 14px;text-transform:none;letter-spacing:0;font-size:13px}
+.cartBtn b{background:#fff;color:var(--accent);border-radius:999px}
+.primary,.secondary,.buttonLike{min-height:48px;border-radius:14px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;transition:.18s ease}
+.primary{background:var(--accent);color:white;border:1px solid var(--accent)}
+.primary:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(49,88,60,.18)}
+.secondary,.buttonLike{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.secondary:hover,.buttonLike:hover{background:#f0f3ee}
+.homeHeroSoft{padding:38px 0 30px}
+.softHeroGrid{display:grid;grid-template-columns:1.02fr .98fr;min-height:570px;background:linear-gradient(135deg,#f0f4eb,#e8efe2);border-radius:32px;overflow:hidden}
+.softHeroCopy{padding:66px 58px;display:flex;flex-direction:column;justify-content:center}
+.heroPill{display:inline-flex;align-items:center;gap:7px;width:max-content;background:rgba(255,255,255,.72);border:1px solid rgba(49,88,60,.12);padding:8px 11px;border-radius:999px;font-size:12px;font-weight:800;color:var(--accent)}
+.softHeroCopy h1{font-size:clamp(48px,5.7vw,76px);line-height:.97;letter-spacing:-.055em;margin:22px 0}
+.softHeroCopy>p{font-size:18px;line-height:1.62;color:#5d675d;max-width:650px}
+.heroActions{display:flex;gap:10px;margin-top:28px}
+.heroTrust{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;color:#667066;font-size:12px;font-weight:700}
+.heroTrust span{display:flex;align-items:center;gap:7px}
+.heroTrust svg{width:17px}
+.softHeroVisual{position:relative;min-height:570px;overflow:hidden;background:linear-gradient(160deg,#cad9c4,#eef4ea)}
+.visualOrb{position:absolute;border-radius:50%;filter:blur(1px)}
+.orbA{width:340px;height:340px;background:#aec7a7;right:-60px;top:20px}
+.orbB{width:230px;height:230px;background:#f1e6d4;left:40px;bottom:30px}
+.heroProductCard{position:absolute;background:rgba(255,255,255,.9);border:1px solid rgba(49,88,60,.14);box-shadow:var(--shadow);backdrop-filter:blur(8px);display:flex;flex-direction:column}
+.heroProductCard small{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.heroProductCard strong{font-size:28px;letter-spacing:-.035em;line-height:1.05}
+.heroProductCard span{font-size:13px;color:var(--muted)}
+.heroProductMain{width:290px;height:330px;border-radius:26px;padding:26px;right:70px;top:90px;justify-content:space-between;transform:rotate(2deg)}
+.heroProductMini{width:210px;height:210px;border-radius:24px;padding:22px;left:30px;bottom:70px;justify-content:space-between;transform:rotate(-4deg)}
+.heroBadgeFloat{position:absolute;right:34px;bottom:28px;background:var(--accent);color:#fff;border-radius:16px;padding:12px 14px;font-size:12px;font-weight:900;line-height:1.2}
+.heroBadgeFloat span{font-weight:500;opacity:.78}
+.categoryStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:18px 0 54px}
+.categoryStrip>a{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;display:grid;grid-template-columns:48px 1fr 22px;align-items:center;gap:12px;transition:.18s ease}
+.categoryStrip>a:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.categoryIcon{width:48px;height:48px;border-radius:14px;background:var(--accent-soft);display:grid;place-items:center;font-size:22px}
+.categoryStrip b,.categoryStrip small{display:block}.categoryStrip small{color:var(--muted);margin-top:4px;font-size:12px}
+.categoryStrip svg{width:18px;color:var(--muted)}
+.featuredSection{padding-top:40px}
+.softSectionHead{border:0;padding:0;margin-bottom:24px;align-items:flex-end}
+.sectionKicker{color:var(--accent);font-size:12px!important;text-transform:uppercase;letter-spacing:.08em}
+.softSectionHead h2{font-size:46px;line-height:1;max-width:none;margin:8px 0 8px}
+.softSectionHead p{margin:0;color:var(--muted)}
+.sectionLink{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:var(--accent)}
+.grid{background:none;border:0;gap:16px}
+.product{border:1px solid var(--border);border-radius:20px;background:var(--surface);overflow:hidden;box-shadow:none}
+.product:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.visual{height:260px;background:#eef0ea;border:0}
+.packshot{width:62%;height:70%;border:0;border-radius:16px;box-shadow:0 10px 30px rgba(50,60,50,.10);transform:none;padding:18px}
+.packshot strong{font-size:25px}
+.visual i{border:0;border-radius:999px;background:#fff;color:var(--accent);box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.product>.heart{border:0;border-radius:12px;background:rgba(255,255,255,.92);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.meta{padding:16px 16px 18px}
+.meta h3{font-size:15px;min-height:40px}
+.price button{border:0;border-radius:12px;background:var(--accent);color:#fff}
+.stock{color:#648160}
+.clubBanner{margin-top:80px;margin-bottom:80px;background:var(--accent);color:#fff;border-radius:28px;padding:46px 48px;display:flex;justify-content:space-between;align-items:center;gap:30px}
+.clubBanner h2{font-size:42px;letter-spacing:-.04em;margin:16px 0 10px}
+.clubBanner p{max-width:680px;color:#d9e4d7;line-height:1.6}
+.lightButton{background:#fff;color:var(--accent);border-color:#fff;white-space:nowrap}
+.authPage{min-height:calc(100vh - 180px);display:grid;grid-template-columns:1fr 520px;gap:44px;align-items:center;padding-block:58px}
+.authSingle{grid-template-columns:minmax(0,520px);justify-content:center}
+.authIntro{padding:40px}
+.authBadge{display:inline-flex;align-items:center;gap:7px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900}
+.authIntro h1{font-size:58px;letter-spacing:-.055em;line-height:.98;margin:24px 0 18px}
+.authIntro>p{font-size:17px;color:var(--muted);line-height:1.65;max-width:620px}
+.authBenefits{display:grid;gap:12px;margin-top:28px}
+.authBenefits span{display:flex;gap:9px;align-items:center;font-size:14px}
+.authBenefits svg{width:18px;color:var(--accent)}
+.authCard{background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:30px;box-shadow:var(--shadow)}
+.authCard h2{font-size:32px;letter-spacing:-.04em;margin:12px 0 6px}
+.authCard>div>p{color:var(--muted)}
+.authLogo{display:flex;align-items:center;gap:9px;font-weight:900;margin-bottom:24px}
+.modernForm{display:grid;gap:15px;margin-top:24px}
+.modernForm label{display:grid;gap:7px;font-size:13px;font-weight:800}
+.modernForm input,.modernForm textarea{width:100%;min-height:48px;border:1px solid var(--border);background:#fbfcfa;border-radius:13px;padding:0 13px;outline:none}
+.modernForm textarea{min-height:110px;padding-top:12px;resize:vertical}
+.modernForm input:focus,.modernForm textarea:focus{border-color:#87a28b;box-shadow:0 0 0 3px rgba(49,88,60,.08)}
+.passwordField{position:relative}.passwordField input{padding-right:46px}.passwordField button{position:absolute;right:7px;top:6px;width:36px;height:36px;border:0;background:transparent;display:grid;place-items:center;color:var(--muted)}
+.wide{width:100%;margin-top:4px}
+.formMessage{background:#f0f5ed;border-radius:12px;padding:11px 12px;font-size:12px;color:#516051}
+.authFoot{text-align:center;margin-top:18px;color:var(--muted);font-size:13px}.authFoot a{color:var(--accent);font-weight:800}
+.accountEmpty{background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:54px;text-align:center;box-shadow:var(--shadow)}
+.accountIcon{width:58px;height:58px;margin:auto;background:var(--accent-soft);color:var(--accent);border-radius:18px;display:grid;place-items:center}
+.accountEmpty h1{font-size:38px;letter-spacing:-.04em;margin-bottom:8px}
+.accountEmpty p{color:var(--muted)}
+.accountTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.accountTop h1{font-size:46px;letter-spacing:-.045em;margin:12px 0 4px}.accountTop p{color:var(--muted)}
+.accountQuick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px}
+.accountQuick>a{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;align-items:center;gap:12px}
+.accountQuick svg{color:var(--accent)}
+.accountQuick b,.accountQuick small{display:block}.accountQuick small{color:var(--muted);margin-top:3px}
+.accountSection{display:grid;grid-template-columns:.8fr 1.2fr;gap:42px;align-items:start}
+.accountSectionCopy h2{font-size:40px;letter-spacing:-.04em;line-height:1.05;margin:14px 0}.accountSectionCopy p{color:var(--muted);line-height:1.6}
+.petAccountForm{margin-top:0;border-radius:22px;box-shadow:none}
+.modernSegmented{background:#eef1ec;border-radius:14px;padding:4px;gap:4px}
+.modernSegmented button{border:0;background:transparent;border-radius:11px;padding:11px}
+.modernSegmented .sel{background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.saveRow{display:flex;align-items:center;gap:12px}.savedText{font-size:12px;color:var(--accent);font-weight:800}
+.card,.filters,.empty,.success{border-radius:20px;border-color:var(--border);background:var(--surface)}
+.checkoutGrid{gap:18px}.checkoutGrid .card{box-shadow:0 5px 18px rgba(38,52,39,.04)}
+.checkoutLine{border-color:#edf0eb}
+.radio{padding:12px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px!important}
+.stats>div{border-radius:18px;background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.stats small{color:var(--muted)}
+@media(max-width:980px){
+ .accountLink span{display:none}
+ .softHeroGrid{grid-template-columns:1fr}
+ .softHeroVisual{min-height:430px}
+ .authPage{grid-template-columns:1fr}
+ .authIntro{text-align:center;padding:20px 10px}.authBenefits{max-width:460px;margin:28px auto 0;text-align:left}
+ .accountSection{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+ .wrap{width:min(100% - 24px,1200px)}
+ .desktopNav{display:none}
+ .search{display:none}
+ .nav{height:66px;gap:8px}
+ .actions{margin-left:auto}
+ .accountLink{width:42px;padding:0}
+ .cartBtn span{display:none}
+ .homeHeroSoft{padding-top:16px}
+ .softHeroGrid{border-radius:22px}
+ .softHeroCopy{padding:38px 24px}
+ .softHeroCopy h1{font-size:46px}
+ .softHeroCopy>p{font-size:16px}
+ .heroActions{flex-direction:column;align-items:stretch}
+ .heroTrust{display:grid}
+ .softHeroVisual{min-height:340px}
+ .heroProductMain{width:230px;height:260px;right:20px;top:45px}
+ .heroProductMini{width:155px;height:165px;left:15px;bottom:35px}
+ .heroProductCard strong{font-size:21px}
+ .categoryStrip{grid-template-columns:1fr;padding-bottom:26px}
+ .grid{grid-template-columns:1fr 1fr;gap:10px}
+ .visual{height:185px}
+ .packshot{width:70%;height:68%;padding:12px}
+ .packshot strong{font-size:20px}
+ .meta{padding:12px}.meta h3{font-size:13px}
+ .softSectionHead{align-items:flex-start}
+ .softSectionHead h2{font-size:34px}
+ .clubBanner{margin:48px 12px;padding:30px 24px;flex-direction:column;align-items:flex-start;border-radius:22px}
+ .clubBanner h2{font-size:34px}
+ .authPage{padding-block:30px;gap:20px}
+ .authIntro h1{font-size:42px}
+ .authCard{padding:22px;border-radius:20px}
+ .accountTop{align-items:flex-start;gap:16px}.accountTop h1{font-size:34px}
+ .accountQuick{grid-template-columns:1fr}
+ .two{grid-template-columns:1fr}
+}
