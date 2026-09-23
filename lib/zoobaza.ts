@@ -23,7 +23,7 @@ const tag=(xml:string,name:string)=>{
  return m?decode(m[1].trim()):'';
 };
 const attr=(xml:string,name:string)=>{
- const m=xml.match(new RegExp(name+'=["\\']([^"\\']*)["\\']','i'));
+ const m=xml.match(new RegExp(name + "=[\\\"']([^\\\"']*)[\\\"']", "i"));
  return m?decode(m[1]):'';
 };
 const number=(v:string)=>Number(String(v).replace(/\s/g,'').replace(',','.'))||0;
