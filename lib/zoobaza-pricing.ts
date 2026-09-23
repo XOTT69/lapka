@@ -31,7 +31,7 @@ export async function getZooBazaPriceRows(limit=1000){
  const ab=await res.arrayBuffer();
 
  const wb=new ExcelJS.Workbook();
- await wb.xlsx.load(Buffer.from(ab));
+ await wb.xlsx.load(Buffer.from(ab) as any);
  const ws=wb.worksheets[0];
  if(!ws) return [];
 
