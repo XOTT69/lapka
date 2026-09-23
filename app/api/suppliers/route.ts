@@ -1,0 +1,1 @@
+const suppliers=[{id:'zoobaza',name:'ZooBaza',format:'XML/YML',status:'awaiting-feed'},{id:'todli',name:'Todli B2B',format:'XML',status:'awaiting-feed'},{id:'collar',name:'COLLAR',format:'XML',status:'awaiting-feed'}];export async function GET(){return Response.json({suppliers,note:'Додайте feed URL у серверні env vars. Секретні URL не зберігаються у GitHub.'})}
