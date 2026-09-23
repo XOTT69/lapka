@@ -14,3 +14,6 @@ Open http://localhost:3000.
 ## Production
 
 Designed for deployment on Vercel. Next steps: supplier feeds, database, checkout, Nova Poshta integration, payments and pet profiles.
+
+
+Build check: GitHub Actions + Vercel ready.
