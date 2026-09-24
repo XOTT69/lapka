@@ -1,13 +1,27 @@
 'use client';
-import {FormEvent,useState} from 'react';
+import Image from 'next/image';
+import {FormEvent,useEffect,useState} from 'react';
 import Link from 'next/link';
-import {Building2,Minus,Plus,Trash2,Truck,WalletCards} from 'lucide-react';
+import {Building2,Minus,Plus,Trash2,WalletCards} from 'lucide-react';
 import {money,useStore} from '@/lib/store';
 import NovaPoshtaPicker from '@/components/nova-poshta-picker';
+import {createClient} from '@/lib/supabase/client';
 
 export default function Checkout(){
  const {cart,total,setQty,remove,addOrder}=useStore();
  const [done,setDone]=useState<{id:string;method:'cod'|'bank_transfer'}|null>(null),[loading,setLoading]=useState(false),[payment,setPayment]=useState<'cod'|'bank_transfer'>('bank_transfer'),[error,setError]=useState('');
+ const [contact,setContact]=useState({name:'',phone:'',email:''});
+
+ useEffect(()=>{
+  const s=createClient();if(!s)return;
+  s.auth.getUser().then(async({data})=>{
+   const u=data.user;if(!u)return;
+   let fullName=String(u.user_metadata?.full_name||''),phone='';
+   const {data:p}=await s.from('profiles').select('full_name,phone').eq('id',u.id).maybeSingle();
+   if(p?.full_name)fullName=p.full_name;if(p?.phone)phone=p.phone;
+   setContact({name:fullName,phone,email:u.email||''});
+  });
+ },[]);
 
  const submit=async(e:FormEvent<HTMLFormElement>)=>{
   e.preventDefault();if(!cart.length)return;setLoading(true);setError('');
@@ -21,10 +35,10 @@ export default function Checkout(){
   setDone({id:order.orderId,method:payment});setLoading(false);
  };
 
- if(done)return <main className="wrap page narrow"><div className="orderSuccess card"><div className="successIcon">✓</div><span className="eyebrow">Замовлення оформлено</span><h1>Дякуємо за замовлення</h1><p>Номер: <b>{done.id}</b></p>{done.method==='bank_transfer'?<div className="paymentNext"><Building2/><div><b>Оплата за реквізитами</b><span>Ми перевіримо наявність товарів і надішлемо реквізити для оплати на вказані контакти. Не оплачуй нічого до підтвердження.</span></div></div>:<div className="paymentNext"><WalletCards/><div><b>Оплата при отриманні</b><span>Після підтвердження наявності замовлення буде передано в роботу.</span></div></div>}<Link className="primary" href="/orders">Мої замовлення</Link></div></main>;
+ if(done)return <main className="wrap page narrow"><div className="orderSuccess card"><div className="successIcon">✓</div><span className="eyebrow">Замовлення оформлено</span><h1>Дякуємо за замовлення</h1><p>Номер: <b>{done.id}</b></p>{done.method==='bank_transfer'?<div className="paymentNext"><Building2/><div><b>Оплата за реквізитами</b><span>Спочатку ми підтвердимо наявність, після чого надішлемо реквізити на вказані контакти.</span></div></div>:<div className="paymentNext"><WalletCards/><div><b>Оплата при отриманні</b><span>Після підтвердження замовлення передамо його в роботу.</span></div></div>}<Link className="primary" href="/orders">Мої замовлення</Link></div></main>;
 
- return <main className="wrap page checkoutPage"><div className="pageIntro compactIntro"><span className="eyebrow">Оформлення</span><h1>Завершення замовлення</h1><p>Контакти, доставка та спосіб оплати.</p></div>{!cart.length?<div className="empty"><h2>Кошик порожній</h2><Link className="primary" href="/catalog">Перейти до каталогу</Link></div>:<div className="checkoutGrid">
- <section className="card checkoutCart"><div className="checkoutCardHead"><h2>Ваше замовлення</h2><span>{cart.reduce((s,x)=>s+x.qty,0)} товарів</span></div>{cart.map(i=><div className="checkoutLine" key={i.product.id}><div className="mini">{i.product.emoji}</div><div><b>{i.product.name}</b><small>{i.product.brand}</small><span>{money(i.product.price)}</span></div><div className="counter"><button type="button" onClick={()=>setQty(i.product.id,i.qty-1)}><Minus size={14}/></button><b>{i.qty}</b><button type="button" onClick={()=>setQty(i.product.id,i.qty+1)}><Plus size={14}/></button></div><button type="button" className="trash" onClick={()=>remove(i.product.id)}><Trash2 size={17}/></button></div>)}<div className="orderTotal"><span>Разом</span><b>{money(total)}</b></div></section>
- <form className="card form checkoutForm" onSubmit={submit}><div className="checkoutStep"><span>1</span><h2>Контакти</h2></div><label>Імʼя<input name="name" required autoComplete="name"/></label><label>Телефон<input name="phone" required inputMode="tel" autoComplete="tel" placeholder="+380…"/></label><label>Email<input name="email" type="email" required autoComplete="email"/></label><div className="checkoutStep"><span>2</span><h2>Доставка Новою поштою</h2></div><NovaPoshtaPicker/><div className="checkoutStep"><span>3</span><h2>Оплата</h2></div><div className="paymentOptions"><label className={payment==='bank_transfer'?'selected':''}><input type="radio" checked={payment==='bank_transfer'} onChange={()=>setPayment('bank_transfer')}/><Building2/><div><b>За реквізитами</b><small>Надішлемо після підтвердження наявності</small></div></label><label className={payment==='cod'?'selected':''}><input type="radio" checked={payment==='cod'} onChange={()=>setPayment('cod')}/><WalletCards/><div><b>При отриманні</b><small>Накладений платіж Нової пошти</small></div></label></div>{error&&<div className="match">{error}</div>}<button disabled={loading} className="primary wide checkoutSubmit" type="submit">{loading?'Оформлюємо…':'Підтвердити замовлення · '+money(total)}</button><p className="checkoutNote">Після оформлення ми перевіримо актуальну наявність і зв’яжемося з вами.</p></form>
+ return <main className="wrap page checkoutPage"><div className="pageIntro"><span className="eyebrow">Оформлення</span><h1>Замовлення</h1><p>Перевір товари, доставку та контактні дані.</p></div>{!cart.length?<div className="empty"><h2>Кошик порожній</h2><Link className="primary" href="/catalog">Перейти до каталогу</Link></div>:<div className="checkoutGrid">
+ <section className="card checkoutCart"><div className="checkoutCardHead"><h2>Ваше замовлення</h2><span>{cart.reduce((s,x)=>s+x.qty,0)} товарів</span></div>{cart.map(i=><div className="checkoutLine" key={i.product.id}><div className="mini">{i.product.image?<Image src={i.product.image} alt="" fill sizes="48px"/>:<span>{i.product.emoji}</span>}</div><div><b>{i.product.name}</b><small>{i.product.brand}</small><span>{money(i.product.price)}</span></div><div className="counter"><button type="button" onClick={()=>setQty(i.product.id,i.qty-1)}><Minus size={14}/></button><b>{i.qty}</b><button type="button" onClick={()=>setQty(i.product.id,i.qty+1)}><Plus size={14}/></button></div><button type="button" className="trash" onClick={()=>remove(i.product.id)}><Trash2 size={17}/></button></div>)}<div className="orderTotal"><span>Разом</span><b>{money(total)}</b></div></section>
+ <form className="card form checkoutForm" onSubmit={submit}><div className="checkoutStep"><span>1</span><h2>Контакти</h2></div><label>Імʼя<input name="name" required autoComplete="name" value={contact.name} onChange={e=>setContact({...contact,name:e.target.value})}/></label><label>Телефон<input name="phone" required inputMode="tel" autoComplete="tel" placeholder="+380…" value={contact.phone} onChange={e=>setContact({...contact,phone:e.target.value})}/></label><label>Email<input name="email" type="email" required autoComplete="email" value={contact.email} onChange={e=>setContact({...contact,email:e.target.value})}/></label><div className="checkoutStep"><span>2</span><h2>Доставка Новою поштою</h2></div><NovaPoshtaPicker/><div className="checkoutStep"><span>3</span><h2>Оплата</h2></div><div className="paymentOptions"><label className={payment==='bank_transfer'?'selected':''}><input type="radio" checked={payment==='bank_transfer'} onChange={()=>setPayment('bank_transfer')}/><Building2/><div><b>За реквізитами</b><small>Надішлемо після підтвердження наявності</small></div></label><label className={payment==='cod'?'selected':''}><input type="radio" checked={payment==='cod'} onChange={()=>setPayment('cod')}/><WalletCards/><div><b>При отриманні</b><small>Накладений платіж Нової пошти</small></div></label></div>{error&&<div className="formMessage">{error}</div>}<button disabled={loading} className="primary wide checkoutSubmit" type="submit">{loading?'Оформлюємо…':'Підтвердити · '+money(total)}</button><p className="checkoutNote">Перед оплатою за реквізитами ми окремо підтвердимо наявність товарів.</p></form>
  </div>}</main>
 }
