@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Heart,Minus,Plus,ShoppingCart,Truck,WalletCards} from 'lucide-react';
+import {Heart,Minus,Plus,ShoppingCart,Truck,WalletCards,Undo2} from 'lucide-react';
 import {useMemo,useState} from 'react';
 import type {CatalogProduct} from '@/lib/catalog';
 import ProductGrid from '@/components/product-grid';
@@ -34,7 +34,7 @@ export default function CatalogProductDetails({product,variants,related}:{produc
     <div className="detailPrice">{product.oldPrice&&<del>{money(product.oldPrice)}</del>}<strong>{money(product.price)}</strong></div>
     <div className="purchaseRow"><div className="qtyControl"><button onClick={()=>setQty(v=>Math.max(1,v-1))}><Minus size={16}/></button><b>{qty}</b><button onClick={()=>setQty(v=>Math.min(20,v+1))}><Plus size={16}/></button></div><button className="button primary addToCart" disabled={!product.available} onClick={addMany}><ShoppingCart size={19}/>{product.available?'Додати в кошик':'Тимчасово немає'}</button></div>
 
-    <div className="purchaseInfo"><div><Truck size={19}/><span><b>Нова пошта</b>Відділення або поштомат обираються при оформленні</span></div><div><WalletCards size={19}/><span><b>Оплата</b>За реквізитами після підтвердження або при отриманні</span></div></div>
+    <div className="purchaseInfo"><Link href="/delivery-payment"><Truck size={19}/><span><b>Нова пошта</b>Умови доставки та оплати</span></Link><Link href="/returns"><Undo2 size={19}/><span><b>Обмін і повернення</b>Перевірити умови для цієї категорії</span></Link><div><WalletCards size={19}/><span><b>Оплата</b>При отриманні або за реквізитами після підтвердження</span></div></div>
    </section>
   </div>
 
