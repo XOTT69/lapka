@@ -36,7 +36,7 @@ export default async function Home(){
     <h1>Усе потрібне для собак і котів.</h1>
     <p>Корм, переноски, лежаки, одяг та аксесуари — з актуальною наявністю й швидким пошуком за кодом товару.</p>
     <form action="/catalog" className="homeSearch"><Search size={20}/><input name="q" placeholder="Що шукаєте?"/><button>Знайти</button></form>
-    <div className="homeHeroLinks"><Link href="/catalog">Перейти в каталог <ArrowRight size={17}/></Link><span><Truck size={16}/>Нова пошта</span><span><WalletCards size={16}/>Оплата після підтвердження</span></div>
+    <div className="homeHeroLinks"><Link href="/catalog">Перейти в каталог <ArrowRight size={17}/></Link><span><Truck size={16}/>Нова пошта</span><span><WalletCards size={16}/>Післяплата доступна</span></div>
    </div>
    <div className="homeHeroProducts">
     {hero.map((p,i)=><Link key={p.externalId} href={'/product/'+encodeURIComponent(p.externalId)} className={'heroProduct heroProduct'+i}><div className="heroProductImage">{p.picture&&<Image src={p.picture} alt={p.name} fill sizes="320px"/>}</div><span>{p.brand||p.category}</span><b>{p.name}</b></Link>)}
