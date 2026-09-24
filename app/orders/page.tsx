@@ -17,9 +17,18 @@ export default function Orders(){
   const list=(rows||[]) as DbOrder[];setDbOrders(list);setLoading(false);
   const track=list.filter(x=>x.np_ttn).slice(0,8);
   if(track.length){
-   await Promise.allSettled(track.map(o=>fetch('/api/orders/tracking',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({orderId:o.id})})));
-   const {data:refreshed}=await s.from('customer_orders').select('id,external_order_id,total,status,created_at,payment_method,np_ttn,np_status,np_tracking_updated_at').order('created_at',{ascending:false});
-   if(refreshed)setDbOrders(refreshed as DbOrder[]);
+   const settled=await Promise.all(track.map(async o=>{
+    try{
+     const r=await fetch('/api/orders/tracking',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({orderId:o.id})});
+     const j=await r.json();return r.ok?{id:o.id,...j}:null;
+    }catch{return null}
+   }));
+   setDbOrders(current=>current.map(o=>{
+    const t=settled.find(x=>x?.id===o.id);
+    if(!t)return o;
+    const nextStatus=['9','10','11'].includes(String(t.statusCode))?'completed':['102','103','108'].includes(String(t.statusCode))?'cancelled':['7','8','101'].includes(String(t.statusCode))?'shipped':o.status;
+    return {...o,status:nextStatus,np_status:t.status||o.np_status,np_tracking_updated_at:t.trackingUpdatedAt||o.np_tracking_updated_at};
+   }));
   }
  }
  useEffect(()=>{load()},[]);
