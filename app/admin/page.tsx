@@ -8,7 +8,7 @@ export default function Admin(){
   <Link href="/admin/settings"><Store/><div><b>Налаштування магазину</b><small>Контакти, доставка, повернення</small></div></Link>
   <Link href="/admin/pricing"><BarChart3/><div><b>Ціни та маржа</b><small>B2B, РРЦ, прибуток</small></div></Link>
   <Link href="/catalog"><Boxes/><div><b>Каталог</b><small>Перевірити товари на сайті</small></div></Link>
-  <Link href="/delivery-payment"><Truck/><div><b>Доставка й оплата</b><small>Перевірити сторінку покупця</small></div></Link>
+  <Link href="/admin/shipping"><Truck/><div><b>Нова пошта</b><small>Відправник і автостворення ТТН</small></div></Link>
   <Link href="/account"><Settings/><div><b>Мій акаунт</b><small>Повернутися до профілю</small></div></Link>
  </div></main>
 }
