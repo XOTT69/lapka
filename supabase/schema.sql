@@ -14,6 +14,7 @@ create table if not exists public.pets (
   name text not null,
   type text not null check (type in ('Собака','Кіт')),
   age text,
+  birth_date date,
   weight text,
   breed text,
   notes text,
