@@ -42,7 +42,8 @@ export default async function ProductPage({params}:{params:Promise<{slug:string}
   sku:product.sku,
   gtin13:product.ean&&/^\d{13}$/.test(product.ean)?product.ean:undefined,
   brand:product.brand?{'@type':'Brand',name:product.brand}:undefined,
-  offers:{'@type':'Offer',url,priceCurrency:'UAH',price:product.price,availability:product.available?'https://schema.org/InStock':'https://schema.org/OutOfStock'}
+  offers:{'@type':'Offer',url,priceCurrency:'UAH',price:product.price,availability:product.available?'https://schema.org/InStock':'https://schema.org/OutOfStock'},
+  ...(reviews.length?{aggregateRating:{'@type':'AggregateRating',ratingValue:(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1),reviewCount:reviews.length}}:{})
  };
  return <main className="wrap page productPageWrap">
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd).replace(/</g,'\\u003c')}}/>
