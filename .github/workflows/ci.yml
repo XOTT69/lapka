@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,6 +24,36 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Runtime smoke test
+        run: |
+          set -euo pipefail
+          npm start > /tmp/lapka-next.log 2>&1 &
+          PID=$!
+          trap 'kill $PID 2>/dev/null || true; cat /tmp/lapka-next.log' EXIT
+
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/ >/tmp/home.html; then
+              break
+            fi
+            sleep 1
+          done
+
+          curl -fsS http://127.0.0.1:3000/catalog >/tmp/catalog.html
+          curl -fsS http://127.0.0.1:3000/sign-in >/tmp/signin.html
+          curl -fsS http://127.0.0.1:3000/checkout >/tmp/checkout.html
+          curl -fsS 'http://127.0.0.1:3000/api/catalog?limit=1' >/tmp/catalog.json
+
+          PRODUCT_ID=$(jq -r '.items[0].externalId // empty' /tmp/catalog.json)
+          test -n "$PRODUCT_ID"
+          curl -fsS "http://127.0.0.1:3000/product/$PRODUCT_ID" >/tmp/product.html
+
+          grep -q 'LAPKA' /tmp/home.html
+          grep -q 'Каталог' /tmp/catalog.html
+          grep -q 'Код товару' /tmp/product.html
+          ! grep -qi 'zoobaza' /tmp/home.html
+          ! grep -qi 'zoobaza' /tmp/catalog.html
+          ! grep -qi 'zoobaza' /tmp/product.html
 
       - name: Check Monge in live feed
         run: |
