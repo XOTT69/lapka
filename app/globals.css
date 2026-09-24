@@ -373,3 +373,25 @@ footer{background:#fff;border-top:1px solid var(--line);padding:30px 0}.footer{d
  .stats{grid-template-columns:1fr 1fr}
  .adminTable>div{grid-template-columns:1fr auto}.adminTable small{grid-column:1}.adminTable strong{text-align:left}
 }
+
+.searchShell{position:relative;flex:1;max-width:600px;margin-left:16px}
+.searchShell .headerSearch{width:100%;max-width:none;margin-left:0}
+.searchClear{height:30px!important;width:30px!important;padding:0!important;margin:0!important;background:transparent!important;color:#747d76!important;display:grid;place-items:center}
+.searchSubmit{flex:0 0 auto}
+.searchSuggestions{position:absolute;left:0;right:0;top:50px;z-index:80;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 42px rgba(24,43,31,.14);padding:6px;overflow:hidden}
+.searchSuggestHead{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#8a928c;padding:7px 8px}
+.searchSuggestions>a{display:grid;grid-template-columns:42px 1fr auto;gap:9px;align-items:center;padding:7px;border-radius:8px}
+.searchSuggestions>a:hover{background:#f4f7f4}
+.suggestImage{width:42px;height:42px;border-radius:7px;background:#f5f7f5;overflow:hidden;display:grid;place-items:center;color:var(--green);font-weight:900}
+.suggestImage img{width:100%;height:100%;object-fit:contain;padding:3px}
+.suggestText{min-width:0}.suggestText b{display:block;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.suggestText span{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.searchSuggestions>a>strong{font-size:11px;white-space:nowrap}
+.allResults{width:100%;height:34px;border:0;border-top:1px solid #edf0ed;background:#fff;color:var(--green);font-size:10px;font-weight:800;margin-top:3px}
+.mobileSearchWrap{display:none}
+@media(max-width:860px){
+ .searchShell:not(.mobileSearchShell){display:none}
+ .mobileSearchWrap{display:block;padding-bottom:9px}
+ .mobileSearchShell{display:block;max-width:none;margin:0}
+ .mobileSearchShell .mobileHeaderSearch{margin:0;width:100%}
+ .mobileSearchShell .searchSuggestions{top:47px}
+}
