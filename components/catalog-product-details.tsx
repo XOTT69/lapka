@@ -29,7 +29,7 @@ export default function CatalogProductDetails({product,variants,related}:{produc
     <div className="productIdentifiers"><span>Код товару: <b>{product.sku}</b></span>{product.ean&&<span>EAN: {product.ean}</span>}</div>
     <div className={product.available?'detailStock in':'detailStock'}><i></i>{product.available?'В наявності':'Під замовлення'}</div>
 
-    {variants.length>0&&<div className="variantSection"><div className="variantTitle">Варіанти</div><div className="variantLinks"><span className="active">{product.color||product.weight||product.sku}</span>{variants.map(v=><Link key={v.externalId} href={'/product/'+encodeURIComponent(v.externalId)}>{v.color||v.weight||v.sku}</Link>)}</div></div>}
+    {variants.length>0&&<div className="variantSection"><div className="variantTitle">Колір / розмір</div><div className="variantLinks"><span className="active">{[product.color,product.params?.['Розмір']||product.weight].filter(Boolean).join(' · ')||product.sku}</span>{variants.map(v=><Link key={v.externalId} href={'/product/'+encodeURIComponent(v.externalId)}>{[v.color,v.params?.['Розмір']||v.weight].filter(Boolean).join(' · ')||v.sku}</Link>)}</div></div>}
 
     <div className="detailPrice">{product.oldPrice&&<del>{money(product.oldPrice)}</del>}<strong>{money(product.price)}</strong></div>
     <div className="purchaseRow"><div className="qtyControl"><button onClick={()=>setQty(v=>Math.max(1,v-1))}><Minus size={16}/></button><b>{qty}</b><button onClick={()=>setQty(v=>Math.min(20,v+1))}><Plus size={16}/></button></div><button className="button primary addToCart" disabled={!product.available} onClick={addMany}><ShoppingCart size={19}/>{product.available?'Додати в кошик':'Тимчасово немає'}</button></div>
