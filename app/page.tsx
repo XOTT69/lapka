@@ -1,35 +1,56 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import {ArrowRight,BadgeCheck,HeartHandshake,PackageCheck,Search,Truck} from 'lucide-react';
-import {getZooBazaProducts} from '@/lib/zoobaza';
-import LiveFeatured from '@/components/live-featured';
-import HomeAccountCta from '@/components/home-account-cta';
+import {ArrowRight,Search,Truck,WalletCards} from 'lucide-react';
+import {getCatalogProducts} from '@/lib/catalog';
+import ProductGrid from '@/components/product-grid';
 
-export const dynamic='force-dynamic';
+export const revalidate=120;
 
-const quickCategories=[
- ['🐶','Для собак','корм собак','Корм, амуніція, іграшки'],
- ['🐱','Для котів','корм кот','Корм, догляд, переноски'],
- ['🥣','Корм','корм','Раціони на щодень'],
- ['🧳','Переноски','переноск','Для поїздок і подорожей'],
- ['🦮','Амуніція','амуніц','Шлеї, повідці, аксесуари'],
- ['🧴','Догляд','догляд','Гігієна та турбота']
+const categories=[
+ ['Корми для собак','Корми для собак'],
+ ['Корми для котів','Корми для котів'],
+ ['Переноски','Переноски'],
+ ['Лежаки та будиночки','Лежаки та будиночки'],
+ ['Одяг','Одяг'],
+ ['Аксесуари','Аксесуари']
 ];
 
 export default async function Home(){
- let featured:Awaited<ReturnType<typeof getZooBazaProducts>>=[];
- try{featured=(await getZooBazaProducts(180)).filter(p=>p.picture&&p.available).slice(0,8)}catch{}
- return <main className="storeHome">
-  <section className="retailHero"><div className="wrap retailHeroGrid">
-   <div className="retailHeroCopy"><span className="heroTag">LAPKA · магазин для своїх</span><h1>Турбота про улюбленців — без зайвих пошуків.</h1><p>Корм, переноски, амуніція та догляд в одному каталозі. Актуальні фото, ціни й наявність.</p><form action="/catalog" className="heroSearch"><Search size={20}/><input name="q" placeholder="Що шукаєте? Наприклад: переноска, корм, код товару"/><button>Знайти</button></form><div className="heroActions"><Link className="primary" href="/catalog">Перейти в каталог <ArrowRight size={18}/></Link><HomeAccountCta/></div></div>
-   <div className="retailHeroAside"><div className="promoCard promoMain"><span>Для хвостиків</span><h2>Все потрібне — в кілька кліків</h2><p>Пошук за назвою, брендом або кодом товару.</p><Link href="/catalog">Обрати товари <ArrowRight size={17}/></Link></div><div className="promoMini"><Truck/><div><b>Нова пошта</b><span>Відділення та поштомати в checkout</span></div></div></div>
-  </div></section>
+ const [featured,dogFood,catFood,carriers,beds]=await Promise.all([
+  getCatalogProducts({limit:8,available:true}),
+  getCatalogProducts({category:'Корми для собак',limit:1,available:true}),
+  getCatalogProducts({category:'Корми для котів',limit:1,available:true}),
+  getCatalogProducts({category:'Переноски',limit:1,available:true}),
+  getCatalogProducts({category:'Лежаки та будиночки',limit:1,available:true})
+ ]);
+ const categoryImages=new Map<string,string|undefined>([
+  ['Корми для собак',dogFood.items[0]?.picture],['Корми для котів',catFood.items[0]?.picture],
+  ['Переноски',carriers.items[0]?.picture],['Лежаки та будиночки',beds.items[0]?.picture]
+ ]);
+ const hero=featured.items.slice(0,2);
 
-  <section className="wrap homeSection"><div className="homeSectionHead"><div><span>Швидкий старт</span><h2>Популярні категорії</h2></div><Link href="/catalog">Увесь каталог <ArrowRight size={16}/></Link></div><div className="quickCategoryGrid">{quickCategories.map(([icon,title,q,desc])=><Link key={title} href={'/catalog?q='+encodeURIComponent(q)}><div className="quickCategoryIcon">{icon}</div><div><b>{title}</b><span>{desc}</span></div><ArrowRight size={17}/></Link>)}</div></section>
+ return <main className="homePage">
+  <section className="wrap homeHero">
+   <div className="homeHeroCopy">
+    <span className="homeEyebrow">Зоомагазин LAPKA</span>
+    <h1>Усе потрібне для собак і котів.</h1>
+    <p>Корм, переноски, лежаки, одяг та аксесуари — з актуальною наявністю й швидким пошуком за кодом товару.</p>
+    <form action="/catalog" className="homeSearch"><Search size={20}/><input name="q" placeholder="Що шукаєте?"/><button>Знайти</button></form>
+    <div className="homeHeroLinks"><Link href="/catalog">Перейти в каталог <ArrowRight size={17}/></Link><span><Truck size={16}/>Нова пошта</span><span><WalletCards size={16}/>Оплата після підтвердження</span></div>
+   </div>
+   <div className="homeHeroProducts">
+    {hero.map((p,i)=><Link key={p.externalId} href={'/product/'+encodeURIComponent(p.externalId)} className={'heroProduct heroProduct'+i}><div className="heroProductImage">{p.picture&&<Image src={p.picture} alt={p.name} fill sizes="320px"/>}</div><span>{p.brand||p.category}</span><b>{p.name}</b></Link>)}
+   </div>
+  </section>
 
-  <section className="wrap homeBenefits"><div><PackageCheck/><b>Актуальні залишки</b><span>Каталог регулярно оновлюється</span></div><div><BadgeCheck/><b>Коди товарів</b><span>Легко знайти потрібний SKU</span></div><div><Truck/><b>Нова пошта</b><span>Місто й відділення зі списку</span></div><div><HeartHandshake/><b>Профілі улюбленців</b><span>Кілька тварин в одному акаунті</span></div></section>
+  <section className="wrap homeSection">
+   <div className="sectionTitleRow"><div><span>Каталог</span><h2>Популярні категорії</h2></div><Link href="/catalog">Усі товари <ArrowRight size={15}/></Link></div>
+   <div className="categoryTiles">{categories.map(([label,category])=><Link key={category} href={'/catalog?category='+encodeURIComponent(category)} className="categoryTile"><div className="categoryTileImage">{categoryImages.get(category)&&<Image src={categoryImages.get(category)!} alt="" fill sizes="220px"/>}</div><div><b>{label}</b><span>Переглянути</span></div><ArrowRight size={17}/></Link>)}</div>
+  </section>
 
-  <section className="catalog wrap featuredSection"><div className="homeSectionHead"><div><span>В наявності</span><h2>Популярне зараз</h2></div><Link href="/catalog">Дивитися все <ArrowRight size={16}/></Link></div>{featured.length?<LiveFeatured items={featured}/>:<div className="empty">Каталог оновлюється.</div>}</section>
-
-  <section className="wrap accountPromo"><div><span>LAPKA PROFILE</span><h2>Магазин пам’ятає ваших улюбленців.</h2><p>Додайте собаку, котика або кількох тварин. Дата народження автоматично визначає вік, а профілі не перезаписують один одного.</p></div><HomeAccountCta light/></section>
+  <section className="wrap homeSection productHomeSection">
+   <div className="sectionTitleRow"><div><span>Каталог</span><h2>В наявності зараз</h2></div><Link href="/catalog">Дивитися все <ArrowRight size={15}/></Link></div>
+   <ProductGrid items={featured.items}/>
+  </section>
  </main>
 }
