@@ -3,18 +3,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {Heart,ShoppingCart} from 'lucide-react';
 import type {CatalogProduct} from '@/lib/catalog';
-import {catalogToStoreProduct,productHash} from '@/lib/product-adapter';
+import {catalogToStoreProduct} from '@/lib/product-adapter';
 import {money,useStore} from '@/lib/store';
 
 export default function CatalogProductCard({product}:{product:CatalogProduct}){
  const {add,favorites,toggleFavorite}=useStore();
- const id=productHash('catalog-'+product.externalId),liked=favorites.includes(id),href='/product/'+encodeURIComponent(product.externalId);
+ const liked=favorites.includes(product.externalId),href='/product/'+encodeURIComponent(product.externalId);
  return <article className="productCard">
   <div className="productMedia">
    <Link href={href} aria-label={product.name}>
     {product.picture?<Image src={product.picture} alt={product.name} fill sizes="(max-width:640px) 50vw,(max-width:1100px) 33vw,25vw" className="productImage"/>:<div className="productImageFallback">LAPKA</div>}
    </Link>
-   <button className={'favoriteButton '+(liked?'active':'')} aria-label={liked?'Прибрати з обраного':'Додати в обране'} onClick={()=>toggleFavorite(id)}><Heart size={18} fill={liked?'currentColor':'none'}/></button>
+   <button className={'favoriteButton '+(liked?'active':'')} aria-label={liked?'Прибрати з обраного':'Додати в обране'} onClick={()=>toggleFavorite(product.externalId)}><Heart size={18} fill={liked?'currentColor':'none'}/></button>
    {product.groupId&&<span className="variantBadge">Є варіанти</span>}
   </div>
   <div className="productInfo">
