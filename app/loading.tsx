@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="wrap page"><div className="pageLoading"><span></span><p>Завантажуємо…</p></div></main>}
