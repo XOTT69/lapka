@@ -9,7 +9,7 @@ import {createClient} from '@/lib/supabase/client';
 
 export default function Checkout(){
  const {cart,total,setQty,remove,addOrder,clearCart}=useStore();
- const [done,setDone]=useState<{id:string;method:'cod'|'bank_transfer'}|null>(null),[loading,setLoading]=useState(false),[payment,setPayment]=useState<'cod'|'bank_transfer'>('bank_transfer'),[error,setError]=useState('');
+ const [done,setDone]=useState<{id:string;method:'cod'|'bank_transfer'}|null>(null),[loading,setLoading]=useState(false),[payment,setPayment]=useState<'cod'|'bank_transfer'>('cod'),[error,setError]=useState('');
  const [contact,setContact]=useState({name:'',phone:'',email:''});
 
  useEffect(()=>{
