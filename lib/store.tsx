@@ -5,18 +5,19 @@ import {Product,products} from './products';
 export type CartLine={product:Product;qty:number};
 export type PetProfile={name:string;type:'Собака'|'Кіт';age:string;weight:string;breed:string;notes:string};
 export type SavedOrder={id:string;createdAt:string;total:number;items:number;status:string};
+export type FavoriteId=number|string;
 
 type StoreValue={
- cart:CartLine[]; favorites:number[]; pet:PetProfile|null; orders:SavedOrder[];
+ cart:CartLine[]; favorites:FavoriteId[]; pet:PetProfile|null; orders:SavedOrder[];
  add:(p:Product)=>void; setQty:(id:number,qty:number)=>void; remove:(id:number)=>void;
- toggleFavorite:(id:number)=>void; setPet:(p:PetProfile|null)=>void; addOrder:(o:SavedOrder)=>void;
+ toggleFavorite:(id:FavoriteId)=>void; setPet:(p:PetProfile|null)=>void; addOrder:(o:SavedOrder)=>void;
  count:number; total:number;
 };
 const C=createContext<StoreValue|null>(null);
 const read=<T,>(key:string,fallback:T):T=>{try{return JSON.parse(localStorage.getItem(key)||'') as T}catch{return fallback}};
 
 export function StoreProvider({children}:{children:React.ReactNode}){
- const [cart,setCart]=useState<CartLine[]>([]),[favorites,setFavorites]=useState<number[]>([]),[pet,setPetState]=useState<PetProfile|null>(null),[orders,setOrders]=useState<SavedOrder[]>([]);
+ const [cart,setCart]=useState<CartLine[]>([]),[favorites,setFavorites]=useState<FavoriteId[]>([]),[pet,setPetState]=useState<PetProfile|null>(null),[orders,setOrders]=useState<SavedOrder[]>([]);
  const [ready,setReady]=useState(false);
  useEffect(()=>{setCart(read('lapka-cart',[]));setFavorites(read('lapka-favorites',[]));setPetState(read('lapka-pet',null));setOrders(read('lapka-orders',[]));setReady(true)},[]);
  useEffect(()=>{if(ready)localStorage.setItem('lapka-cart',JSON.stringify(cart))},[cart,ready]);
@@ -29,8 +30,8 @@ export function StoreProvider({children}:{children:React.ReactNode}){
    setQty:(id,qty)=>setCart(c=>c.map(i=>i.product.id===id?{...i,qty}:i).filter(i=>i.qty>0)),
    remove:id=>setCart(c=>c.filter(i=>i.product.id!==id)),
    toggleFavorite:id=>setFavorites(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]),
-   setPet:p=>setPetState(p), addOrder:o=>setOrders(v=>[o,...v]),
-   count:cart.reduce((s,i)=>s+i.qty,0), total:cart.reduce((s,i)=>s+i.qty*i.product.price,0)
+   setPet:p=>setPetState(p),addOrder:o=>setOrders(v=>[o,...v]),
+   count:cart.reduce((s,i)=>s+i.qty,0),total:cart.reduce((s,i)=>s+i.qty*i.product.price,0)
  }),[cart,favorites,pet,orders]);
  return <C.Provider value={value}>{children}</C.Provider>
 }
