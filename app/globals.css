@@ -470,3 +470,15 @@ input,select,textarea{font-size:16px}
  .checkoutForm{padding:17px}
  .npDropdown{position:fixed;left:12px;right:12px;top:auto;bottom:calc(78px + env(safe-area-inset-bottom));max-height:42vh;border-radius:18px}
 }
+
+.productSku{margin-top:7px;color:var(--muted);font-size:11px}
+.productSku b{color:#4b554c;font-weight:800}
+.liveProductHero{background:#fff;border:1px solid var(--line)}
+.liveProductHero img{width:100%;height:100%;object-fit:contain;padding:28px}
+.productCodeLine{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 18px;color:var(--muted);font-size:12px}
+.productCodeLine b{color:var(--text)}
+.productAvailability.big{font-size:13px;margin-top:16px}
+.petBirthDate{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+.fieldHint{display:block;margin-top:5px;color:var(--green);font-size:11px;font-weight:800}
+.liveProduct .meta>a h3{transition:color .15s}
+.liveProduct .meta>a:hover h3{color:var(--green)}
