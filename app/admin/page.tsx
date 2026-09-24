@@ -1,6 +1,12 @@
-import {products} from '@/lib/products';
-const money=(n:number)=>new Intl.NumberFormat('uk-UA').format(n)+' ₴';
+import Link from 'next/link';
+import {BarChart3,Boxes,ClipboardList,Settings} from 'lucide-react';
+
 export default function Admin(){
- const inventory=products.reduce((s,p)=>s+p.stock,0),catalogValue=products.reduce((s,p)=>s+p.price*p.stock,0);
- return <main className="wrap page"><div className="pageIntro"><span className="eyebrow">LAPKA Admin</span><h1>Панель магазину</h1><p>Внутрішня технічна сторінка. Перед публічним запуском її буде закрито окремою авторизацією адміністратора.</p></div><div className="stats"><div><small>SKU</small><b>{products.length}</b></div><div><small>Залишок</small><b>{inventory}</b></div><div><small>Вартість каталогу</small><b>{money(catalogValue)}</b></div><div><small>Джерела каталогу</small><b>3</b></div></div><div className="card"><h2>Демо-каталог</h2><div className="adminTable">{products.map(p=><div key={p.id}><span>{p.emoji} {p.brand} — {p.name}</span><b>{money(p.price)}</b><small>{p.stock} шт.</small></div>)}</div></div><div className="card integration"><h2>Інтеграції</h2><p><b>Джерело A:</b> live XML підключено. <a href="/catalog">Каталог →</a> · <a href="/catalog/popular">Популярне →</a> · <a href="/admin/pricing">B2B/РРЦ →</a></p><p><b>Джерела B/C:</b> очікуємо доступ до фідів.</p><p><b>Доставка:</b> API-шар підготовлений.</p><p><b>Онлайн-оплата:</b> checkout підготовлений до merchant-ключів.</p></div></main>
+ return <main className="wrap page"><div className="pageIntro"><span className="eyebrow">LAPKA Admin</span><h1>Панель магазину</h1><p>Робоче місце для замовлень, каталогу та цін.</p></div>
+ <div className="adminHub">
+  <Link href="/admin/orders"><ClipboardList/><div><b>Замовлення</b><small>Оплата, статуси, доставка</small></div></Link>
+  <Link href="/admin/pricing"><BarChart3/><div><b>Ціни та маржа</b><small>B2B, РРЦ, прибуток</small></div></Link>
+  <Link href="/catalog"><Boxes/><div><b>Каталог</b><small>Перевірити товари на сайті</small></div></Link>
+  <Link href="/account"><Settings/><div><b>Акаунт</b><small>Профіль адміністратора</small></div></Link>
+ </div></main>
 }
