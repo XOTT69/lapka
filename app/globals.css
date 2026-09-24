@@ -482,3 +482,167 @@ input,select,textarea{font-size:16px}
 .fieldHint{display:block;margin-top:5px;color:var(--green);font-size:11px;font-weight:800}
 .liveProduct .meta>a h3{transition:color .15s}
 .liveProduct .meta>a:hover h3{color:var(--green)}
+
+/* Retail redesign 2026 */
+.storeTopbar{background:#214f3b;color:#eaf5ee;font-size:11px}
+.storeTopbar .wrap{min-height:30px;display:flex;align-items:center;justify-content:center;gap:34px}
+.siteHeader{background:rgba(255,255,255,.96);border-bottom:1px solid #e6e9e5}
+.nav{height:76px}
+.brand{font-size:22px}
+.logo{border-radius:10px}
+.siteHeader .search{margin-left:22px;width:min(560px,46vw);height:46px;border-radius:11px;background:#f7f8f6}
+.siteHeader .search input{font-size:14px}
+.siteHeader .search button{border:0;background:var(--green);color:#fff;height:34px;padding:0 14px;border-radius:8px;font-size:12px;font-weight:800}
+.shopNav{height:44px;display:flex;align-items:center;gap:26px;overflow:auto;white-space:nowrap;scrollbar-width:none;font-size:13px;font-weight:800;color:#4b554d}
+.shopNav::-webkit-scrollbar{display:none}
+.shopNav a:first-child{color:var(--green)}
+.shopNav a:hover{color:var(--green)}
+
+.storeHome{background:#f7f8f5}
+.retailHero{padding:28px 0 18px}
+.retailHeroGrid{display:grid;grid-template-columns:1.55fr .8fr;gap:16px}
+.retailHeroCopy{background:#e8f3eb;border-radius:24px;padding:48px;min-height:420px;display:flex;flex-direction:column;justify-content:center}
+.heroTag{width:max-content;background:#fff;border:1px solid #d4e5d9;border-radius:999px;padding:7px 10px;font-size:10px;font-weight:900;letter-spacing:.08em;color:var(--green)}
+.retailHeroCopy h1{font-size:clamp(42px,5.2vw,68px);line-height:.98;letter-spacing:-.055em;max-width:760px;margin:20px 0 16px}
+.retailHeroCopy>p{max-width:650px;font-size:17px;line-height:1.55;color:#657067;margin:0}
+.heroSearch{height:54px;max-width:690px;margin-top:26px;background:#fff;border:1px solid #dce4dd;border-radius:13px;display:flex;align-items:center;padding:0 8px 0 14px;gap:9px}
+.heroSearch input{flex:1;min-width:0;border:0;outline:0;font-size:16px;background:transparent}
+.heroSearch button{height:40px;border:0;border-radius:9px;background:var(--green);color:#fff;padding:0 18px;font-weight:800}
+.retailHeroCopy .heroActions{margin-top:14px}
+.retailHeroAside{display:grid;grid-template-rows:1fr auto;gap:12px}
+.promoCard{border-radius:24px;padding:30px;background:#26362e;color:#fff;display:flex;flex-direction:column;justify-content:flex-end}
+.promoCard>span{font-size:11px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#b8d7c4}
+.promoCard h2{font-size:35px;line-height:1.02;letter-spacing:-.045em;margin:12px 0}
+.promoCard p{color:#cbd9d0;line-height:1.5;margin:0 0 20px}
+.promoCard a{display:inline-flex;align-items:center;gap:7px;font-weight:800}
+.promoMini{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;display:flex;gap:12px;align-items:center}
+.promoMini>svg{width:42px;height:42px;padding:10px;border-radius:12px;background:var(--green2);color:var(--green)}
+.promoMini b,.promoMini span{display:block}
+.promoMini span{font-size:11px;color:var(--muted);margin-top:3px}
+
+.homeSection{padding:42px 0 18px}
+.homeSectionHead{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.homeSectionHead>div>span{text-transform:uppercase;letter-spacing:.09em;font-size:10px;font-weight:900;color:var(--green)}
+.homeSectionHead h2{font-size:34px;letter-spacing:-.04em;margin:5px 0 0}
+.homeSectionHead>a{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--green)}
+.quickCategoryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quickCategoryGrid>a{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:12px;transition:.16s}
+.quickCategoryGrid>a:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.quickCategoryIcon{width:48px;height:48px;border-radius:13px;background:#f0f4ef;display:grid;place-items:center;font-size:23px}
+.quickCategoryGrid b,.quickCategoryGrid span{display:block}
+.quickCategoryGrid b{font-size:15px}
+.quickCategoryGrid span{font-size:11px;color:var(--muted);margin-top:4px}
+.quickCategoryGrid svg{color:#9ba39b}
+
+.homeBenefits{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:24px 0 22px}
+.homeBenefits>div{background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px;display:grid;grid-template-columns:36px 1fr;column-gap:10px;align-items:center}
+.homeBenefits svg{grid-row:1/3;width:36px;height:36px;padding:9px;border-radius:10px;background:var(--green2);color:var(--green)}
+.homeBenefits b{font-size:13px}
+.homeBenefits span{font-size:10px;color:var(--muted)}
+
+.featuredSection{padding-top:34px}
+.accountPromo{margin:58px auto 72px;background:#285c45;border-radius:22px;padding:34px;display:flex;justify-content:space-between;align-items:center;gap:24px;color:#fff}
+.accountPromo>div>span{font-size:10px;font-weight:900;letter-spacing:.1em;color:#b9d8c5}
+.accountPromo h2{font-size:34px;letter-spacing:-.04em;margin:10px 0}
+.accountPromo p{color:#d7e5dc;max-width:720px;margin:0;line-height:1.55}
+
+/* Checkout / payment */
+.checkoutPage{max-width:1120px}
+.compactIntro{margin-bottom:18px}
+.checkoutGrid{grid-template-columns:.95fr 1.05fr;align-items:start}
+.checkoutCart{position:sticky;top:170px}
+.checkoutCardHead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:4px}
+.checkoutCardHead h2{margin:0}
+.checkoutCardHead span{font-size:11px;color:var(--muted)}
+.checkoutStep{display:flex;align-items:center;gap:10px;margin:24px 0 14px}
+.checkoutStep>span{width:27px;height:27px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:900}
+.checkoutStep h2{margin:0;font-size:18px}
+.paymentOptions{display:grid;gap:9px}
+.paymentOptions>label{border:1px solid var(--line);border-radius:13px;padding:13px;display:grid!important;grid-template-columns:auto 34px 1fr;align-items:center;gap:10px;margin:0!important;background:#fff}
+.paymentOptions>label.selected{border-color:#8eb79c;background:#f0f7f2;box-shadow:0 0 0 2px rgba(47,109,79,.06)}
+.paymentOptions>label>svg{color:var(--green)}
+.paymentOptions b,.paymentOptions small{display:block}
+.paymentOptions small{margin-top:3px;color:var(--muted);font-weight:500}
+.checkoutSubmit{margin-top:18px;min-height:52px}
+.checkoutNote{text-align:center;color:var(--muted);font-size:11px;line-height:1.45}
+.orderSuccess{text-align:center;padding:42px}
+.successIcon{width:56px;height:56px;border-radius:50%;background:var(--green2);color:var(--green);display:grid;place-items:center;font-size:28px;font-weight:900;margin:0 auto 16px}
+.orderSuccess h1{font-size:38px;letter-spacing:-.045em}
+.paymentNext{display:flex;align-items:flex-start;gap:12px;text-align:left;background:#f0f6f1;border-radius:14px;padding:14px;margin:22px 0}
+.paymentNext svg{color:var(--green);flex:0 0 auto}
+.paymentNext b,.paymentNext span{display:block}
+.paymentNext span{font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px}
+
+/* Admin workflow */
+.adminHub{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.adminHub>a{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;align-items:center;gap:14px}
+.adminHub>a>svg{width:44px;height:44px;padding:11px;border-radius:12px;background:var(--green2);color:var(--green)}
+.adminHub b,.adminHub small{display:block}
+.adminHub small{color:var(--muted);margin-top:3px}
+.paymentSettings{display:grid;grid-template-columns:1fr 1.2fr auto;align-items:center;gap:16px;margin-bottom:16px}
+.paymentSettings h2{margin:0 0 5px}
+.paymentSettings p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+.paymentSettings textarea{min-height:92px;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:14px;resize:vertical}
+.adminOrderList{display:grid;gap:12px}
+.adminOrderCard{display:grid;gap:14px}
+.adminOrderTop{display:flex;justify-content:space-between;gap:18px}
+.adminOrderTop span{font-size:10px;color:var(--muted)}
+.adminOrderTop h2{margin:4px 0;font-size:20px}
+.adminOrderTop p{margin:0;color:var(--muted);font-size:12px}
+.adminOrderTotal{font-size:23px;font-weight:900}
+.adminOrderMeta{display:flex;gap:16px;flex-wrap:wrap;padding:10px 0;border-block:1px solid var(--line);font-size:11px;color:#5e685f}
+.adminOrderMeta span{display:flex;align-items:center;gap:6px}
+.adminOrderItems{display:grid}
+.adminOrderItems>div{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:7px 0;border-bottom:1px solid #f0f2ef;align-items:center}
+.adminOrderItems small{color:var(--muted)}
+.adminOrderActions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.adminOrderActions select{height:42px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:#fff;font-size:13px}
+.orderDone{display:flex;align-items:center;gap:5px;color:var(--green);font-weight:800;font-size:12px}
+
+@media(max-width:900px){
+ .storeTopbar .wrap{justify-content:flex-start;overflow:auto;white-space:nowrap}
+ .nav{height:64px}
+ .siteHeader .search{display:none}
+ .shopNav{height:40px;gap:20px}
+ .retailHeroGrid{grid-template-columns:1fr}
+ .retailHeroCopy{padding:34px 24px;min-height:auto}
+ .retailHeroAside{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+ .promoCard{min-height:220px}
+ .quickCategoryGrid{grid-template-columns:repeat(2,1fr)}
+ .homeBenefits{grid-template-columns:repeat(2,1fr)}
+ .accountPromo{align-items:flex-start;flex-direction:column}
+ .checkoutGrid{grid-template-columns:1fr}
+ .checkoutCart{position:static}
+ .paymentSettings{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ .storeTopbar{display:none}
+ .nav{gap:10px}
+ .brand{font-size:19px}
+ .actions{margin-left:auto}
+ .accountLink span,.cartBtn span{display:none}
+ .accountLink,.headerIcon,.cartBtn{width:42px;min-width:42px;padding:0}
+ .shopNav{width:100%;padding-inline:16px}
+ .retailHero{padding-top:16px}
+ .retailHeroCopy{border-radius:18px;padding:28px 18px}
+ .retailHeroCopy h1{font-size:40px}
+ .retailHeroCopy>p{font-size:15px}
+ .heroSearch{height:50px}
+ .heroSearch button{padding:0 13px}
+ .retailHeroAside{grid-template-columns:1fr}
+ .promoCard{border-radius:18px}
+ .quickCategoryGrid{grid-template-columns:1fr 1fr}
+ .quickCategoryGrid>a{grid-template-columns:42px 1fr;padding:13px}
+ .quickCategoryGrid>a>svg{display:none}
+ .quickCategoryIcon{width:42px;height:42px}
+ .homeBenefits{grid-template-columns:1fr 1fr}
+ .homeBenefits>div{grid-template-columns:32px 1fr;padding:12px}
+ .homeBenefits svg{width:32px;height:32px;padding:8px}
+ .homeSectionHead h2{font-size:28px}
+ .accountPromo{margin-top:38px;padding:25px 20px;border-radius:18px}
+ .accountPromo h2{font-size:29px}
+ .adminHub{grid-template-columns:1fr}
+ .adminOrderTop{align-items:flex-start}
+ .adminOrderItems>div{grid-template-columns:1fr auto}
+ .adminOrderItems small{grid-row:2}
+}
