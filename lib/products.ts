@@ -1,6 +1,6 @@
 export type Product = {
   id:number; slug:string; name:string; brand:string; category:string; pet:'Собаки'|'Коти';
-  price:number; oldPrice?:number; badge?:string; emoji:string; description:string;
+  price:number; oldPrice?:number; badge?:string; emoji:string; image?:string; description:string;
   stock:number; weight?:string; age?:string; features:string[];
 };
 
