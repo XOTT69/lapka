@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {FormEvent,useEffect,useState} from 'react';
-import {Heart,LogOut,Package,PawPrint,Plus,Save,Trash2,UserRound,X} from 'lucide-react';
+import {Heart,LogOut,Package,PawPrint,Plus,Save,Trash2,UserRound,X,Settings,ShieldCheck} from 'lucide-react';
 import {createClient} from '@/lib/supabase/client';
 import type {User} from '@supabase/supabase-js';
 
@@ -18,7 +18,7 @@ function ageFromBirthDate(value:string){
 
 export default function AccountPage(){
  const [user,setUser]=useState<User|null>(null),[loading,setLoading]=useState(true),[saved,setSaved]=useState('');
- const [pets,setPets]=useState<Pet[]>([]),[editing,setEditing]=useState<Pet|null>(null),[savingPet,setSavingPet]=useState(false);
+ const [pets,setPets]=useState<Pet[]>([]),[editing,setEditing]=useState<Pet|null>(null),[savingPet,setSavingPet]=useState(false),[isAdmin,setIsAdmin]=useState(false);
 
  async function loadPets(uid:string){
   const supabase=createClient();if(!supabase)return;
@@ -26,7 +26,7 @@ export default function AccountPage(){
   if(!error)setPets((data||[]).map((p:any)=>({...p,birth_date:p.birth_date||''})) as Pet[]);
  }
 
- useEffect(()=>{const supabase=createClient();if(!supabase){setLoading(false);return}supabase.auth.getUser().then(async({data})=>{const u=data.user||null;setUser(u);if(u)await loadPets(u.id);setLoading(false)})},[]);
+ useEffect(()=>{const supabase=createClient();if(!supabase){setLoading(false);return}supabase.auth.getUser().then(async({data})=>{const u=data.user||null;setUser(u);if(u){await loadPets(u.id);const {data:admin}=await supabase.from('admin_users').select('id').eq('id',u.id).maybeSingle();setIsAdmin(Boolean(admin))}setLoading(false)})},[]);
 
  async function savePet(e:FormEvent){e.preventDefault();if(!editing||!user||savingPet)return;setSaved('');setSavingPet(true);
   const supabase=createClient();if(!supabase){setSavingPet(false);return}
@@ -50,6 +50,7 @@ export default function AccountPage(){
  const name=user.user_metadata?.full_name||'Привіт';
  return <main className="wrap page accountPage"><div className="accountTop"><div><span className="eyebrow">Мій акаунт</span><h1>{name}</h1><p>{user.email}</p></div><button className="secondary buttonLike" onClick={signOut}><LogOut size={17}/>Вийти</button></div>
  <div className="accountQuick"><Link href="/orders"><Package/><div><b>Замовлення</b><small>Історія покупок</small></div></Link><Link href="/favorites"><Heart/><div><b>Обране</b><small>Збережені товари</small></div></Link><a href="#pets"><PawPrint/><div><b>Улюбленці</b><small>{pets.length?pets.length+' профілів':'Додати профіль'}</small></div></a></div>
+ {isAdmin&&<section className="adminAccessCard"><div><span className="sectionLabel">Адміністратор</span><h2>Керування LAPKA</h2><p>Замовлення, реквізити, доставка, ціни й публічні налаштування магазину.</p></div><div className="adminAccessActions"><Link className="primary" href="/admin"><ShieldCheck size={17}/>Відкрити адмінку</Link><Link className="secondary" href="/admin/settings"><Settings size={17}/>Налаштування</Link></div></section>
 
  <section id="pets" className="petsSection"><div className="petsHeader"><div><span className="sectionLabel">Мої улюбленці</span><h2>Кожен — окремим профілем.</h2><p>Додавай стільки тварин, скільки потрібно. Новий профіль не змінює попередній.</p></div><button className="primary" onClick={()=>{setSaved('');setEditing(emptyPet())}}><Plus size={17}/>Додати тварину</button></div>
  {pets.length?<div className="petsGrid">{pets.map(p=><article className="petProfileCard" key={p.id}><div className="petAvatar">{p.type==='Кіт'?'🐱':'🐶'}</div><div className="petProfileInfo"><span>{p.type}</span><h3>{p.name}</h3><p>{[ageFromBirthDate(p.birth_date),p.weight,p.breed].filter(Boolean).join(' · ')||'Додай більше даних'}</p></div><div className="petActions"><button onClick={()=>{setSaved('');setEditing({...p})}}>Редагувати</button><button aria-label="Видалити" onClick={()=>removePet(p.id)}><Trash2 size={16}/></button></div></article>)}</div>:<div className="empty"><h3>Поки немає улюбленців</h3><p>Додай собаку, кота або кількох тварин — усі збережуться окремо.</p></div>}
