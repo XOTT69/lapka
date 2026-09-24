@@ -12,7 +12,7 @@ export default function CatalogProductDetails({product,variants,related}:{produc
  const gallery=useMemo(()=>[...new Set([product.picture,...product.pictures].filter(Boolean) as string[])],[product]);
  const [active,setActive]=useState(gallery[0]||''),[qty,setQty]=useState(1);
  const {add,favorites,toggleFavorite}=useStore();
- const favoriteKey=product.externalId,liked=favorites.includes(favoriteKey as any);
+ const favoriteKey=product.externalId,liked=favorites.includes(favoriteKey);
  const characteristics=Object.entries(product.params||{}).filter(([k,v])=>k&&v&&String(v).length<120).slice(0,18);
  const addMany=()=>{const p=catalogToStoreProduct(product);for(let i=0;i<qty;i++)add(p)};
 
@@ -24,7 +24,7 @@ export default function CatalogProductDetails({product,variants,related}:{produc
    </section>
 
    <section className="productSummary">
-    <div className="productBrandLine"><span>{product.brand||product.category||'LAPKA'}</span><button onClick={()=>toggleFavorite(favoriteKey as any)} className={liked?'active':''}><Heart size={19} fill={liked?'currentColor':'none'}/>{liked?'В обраному':'В обране'}</button></div>
+    <div className="productBrandLine"><span>{product.brand||product.category||'LAPKA'}</span><button onClick={()=>toggleFavorite(favoriteKey)} className={liked?'active':''}><Heart size={19} fill={liked?'currentColor':'none'}/>{liked?'В обраному':'В обране'}</button></div>
     <h1>{product.name}</h1>
     <div className="productIdentifiers"><span>Код товару: <b>{product.sku}</b></span>{product.ean&&<span>EAN: {product.ean}</span>}</div>
     <div className={product.available?'detailStock in':'detailStock'}><i></i>{product.available?'В наявності':'Під замовлення'}</div>
