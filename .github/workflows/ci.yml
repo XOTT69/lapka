@@ -24,3 +24,8 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check Monge in live feed
+        run: |
+          COUNT=$(curl -L -s https://basmati.com.ua/zoobaza_full.php | grep -io 'monge' | wc -l || true)
+          echo "MONGE_COUNT=$COUNT"
