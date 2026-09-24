@@ -16,7 +16,7 @@ export async function POST(req:Request){
   const x=await np(key,o.np_ttn,String(o.payload?.customer?.phone||''));
   const code=String(x.StatusCode||''),status=String(x.Status||'');
   const orderStatus=['9','10','11'].includes(code)?'completed':['7','8','101'].includes(code)?'shipped':o.status;
-  await supabase.from('customer_orders').update({np_status:status||null,np_status_code:code||null,np_tracking_updated_at:new Date().toISOString(),status:orderStatus,updated_at:new Date().toISOString()}).eq('id',o.id).eq('user_id',user.id);
+  await supabase.rpc('update_my_order_tracking',{p_order_id:o.id,p_np_status:status,p_np_status_code:code});
   return Response.json({ok:true,status,statusCode:code});
  }catch(e){return Response.json({ok:false,message:e instanceof Error?e.message:'Tracking error'},{status:500})}
 }
