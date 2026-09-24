@@ -353,3 +353,23 @@ footer{background:#fff;border-top:1px solid var(--line);padding:30px 0}.footer{d
 @keyframes navLoad{from{width:18%}to{width:82%}}
 .mini{position:relative;overflow:hidden}
 .mini img{object-fit:contain;padding:4px}
+
+.authSimple{min-height:calc(100vh - 113px);display:grid;place-items:center;padding:48px 16px}
+.authCardSimple{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px}
+.authLogo{font-size:13px;font-weight:900;letter-spacing:.1em;color:var(--green);margin-bottom:14px}
+.authCardSimple h1{font-size:32px;letter-spacing:-.04em;margin:0 0 6px}
+.authCardSimple>p{margin:0 0 22px;color:var(--muted);font-size:12px;line-height:1.55}
+.accountIcon{width:52px;height:52px;border-radius:10px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;margin:0 auto 12px}
+.heroBtns{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+.stats>div{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px}
+.stats small,.stats b{display:block}.stats small{font-size:9px;color:var(--muted)}.stats b{font-size:20px;margin-top:4px}
+.adminTable>div{display:grid;grid-template-columns:minmax(220px,1fr) 120px 120px 150px;gap:10px;padding:9px 0;border-bottom:1px solid #edf0ed;font-size:10px;align-items:center}
+.adminTable>div:last-child{border-bottom:0}.adminTable small{color:var(--muted)}.adminTable strong{text-align:right}
+.pricingNote{font-size:10px;color:var(--muted)}
+@media(max-width:700px){
+ .authSimple{padding:28px 10px}.authCardSimple{padding:20px}
+ .stats{grid-template-columns:1fr 1fr}
+ .adminTable>div{grid-template-columns:1fr auto}.adminTable small{grid-column:1}.adminTable strong{text-align:left}
+}
