@@ -1,1 +1,2 @@
-export {default,dynamic} from '../zoobaza/hits/page';
+import {redirect} from 'next/navigation';
+export default function LegacyPopular(){redirect('/popular')}
