@@ -10,7 +10,7 @@ export type FavoriteId=number|string;
 type StoreValue={
  cart:CartLine[]; favorites:FavoriteId[]; pet:PetProfile|null; orders:SavedOrder[];
  add:(p:Product)=>void; setQty:(id:number,qty:number)=>void; remove:(id:number)=>void;
- toggleFavorite:(id:FavoriteId)=>void; setPet:(p:PetProfile|null)=>void; addOrder:(o:SavedOrder)=>void;
+ toggleFavorite:(id:FavoriteId)=>void; clearCart:()=>void; setPet:(p:PetProfile|null)=>void; addOrder:(o:SavedOrder)=>void;
  count:number; total:number;
 };
 const C=createContext<StoreValue|null>(null);
@@ -30,6 +30,7 @@ export function StoreProvider({children}:{children:React.ReactNode}){
    setQty:(id,qty)=>setCart(c=>c.map(i=>i.product.id===id?{...i,qty}:i).filter(i=>i.qty>0)),
    remove:id=>setCart(c=>c.filter(i=>i.product.id!==id)),
    toggleFavorite:id=>setFavorites(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]),
+   clearCart:()=>setCart([]),
    setPet:p=>setPetState(p),addOrder:o=>setOrders(v=>[o,...v]),
    count:cart.reduce((s,i)=>s+i.qty,0),total:cart.reduce((s,i)=>s+i.qty*i.product.price,0)
  }),[cart,favorites,pet,orders]);
