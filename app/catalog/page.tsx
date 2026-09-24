@@ -1,14 +1,17 @@
-import LiveCatalog from '@/components/live-catalog';
-import {getZooBazaProducts} from '@/lib/zoobaza';
+import CatalogBrowser from '@/components/catalog-browser';
+import {getCatalogFacets,getCatalogProducts} from '@/lib/catalog';
 
-export const dynamic='force-dynamic';
+export const revalidate=120;
 
-export default async function CatalogPage({searchParams}:{searchParams:Promise<{q?:string}>}){
+export default async function CatalogPage({searchParams}:{searchParams:Promise<{q?:string;category?:string}>}){
  const sp=await searchParams;
- let items:Awaited<ReturnType<typeof getZooBazaProducts>>=[]; let error='';
- try{items=await getZooBazaProducts(1200)}catch(e){error=e instanceof Error?e.message:'Каталог тимчасово недоступний'}
- return <main className="wrap page">
-  <div className="pageIntro"><span className="eyebrow">Каталог LAPKA</span><h1>Знайди потрібне швидко</h1><p>Актуальні товари, фото, ціни й наявність — усе в одному каталозі.</p></div>
-  {error?<div className="empty"><h2>Не вдалося завантажити каталог</h2><p>{error}</p></div>:<LiveCatalog items={items} initialQuery={sp.q||''}/>}
+ const q=sp.q||'',category=sp.category||'';
+ const [result,facets]=await Promise.all([
+  getCatalogProducts({q,category,limit:48,available:true}),
+  getCatalogFacets()
+ ]);
+ return <main className="wrap page catalogPage">
+  <div className="catalogPageHead"><div><span>Каталог LAPKA</span><h1>{category||'Товари для улюбленців'}</h1></div></div>
+  <CatalogBrowser initialItems={result.items} initialTotal={result.total} facets={facets} initialQuery={q} initialCategory={category}/>
  </main>
 }
