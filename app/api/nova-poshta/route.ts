@@ -15,18 +15,13 @@ export async function POST(req:Request){
  try{
   const key=process.env.NOVA_POSHTA_API_KEY;
   if(!key)return Response.json({ok:false,configured:false,message:'Nova Poshta API key is not configured.'},{status:503});
-
   const body=(await req.json()) as NPBody;
+
   if(body.action==='cities'){
    const q=(body.query||'').trim();
    if(q.length<2)return Response.json({ok:true,data:[]});
    const raw=await npRequest(key,'Address','getCities',{FindByString:q,Limit:'20',Page:'1'});
-   const data=Array.isArray(raw.data)?raw.data.map((x:any)=>({
-    ref:String(x.Ref||''),
-    name:String(x.Description||x.DescriptionRu||''),
-    area:String(x.AreaDescription||''),
-    settlementType:String(x.SettlementTypeDescription||'')
-   })).filter((x:any)=>x.ref&&x.name):[];
+   const data=Array.isArray(raw.data)?raw.data.map((x:any)=>({ref:String(x.Ref||''),name:String(x.Description||x.DescriptionRu||''),area:String(x.AreaDescription||''),settlementType:String(x.SettlementTypeDescription||'')})).filter((x:any)=>x.ref&&x.name):[];
    return Response.json({ok:Boolean(raw.success),data,errors:raw.errors||[]});
   }
 
@@ -34,14 +29,7 @@ export async function POST(req:Request){
    const cityRef=(body.cityRef||'').trim();
    if(!cityRef)return Response.json({ok:false,data:[],message:'CityRef required'},{status:400});
    const raw=await npRequest(key,'AddressGeneral','getWarehouses',{CityRef:cityRef,FindByString:(body.query||'').trim(),Limit:'100',Page:'1',Language:'UA'});
-   const data=Array.isArray(raw.data)?raw.data.map((x:any)=>({
-    ref:String(x.Ref||''),
-    number:String(x.Number||''),
-    name:String(x.Description||''),
-    shortAddress:String(x.ShortAddress||''),
-    type:String(x.TypeOfWarehouse||''),
-    category:String(x.CategoryOfWarehouse||'')
-   })).filter((x:any)=>x.ref&&x.name):[];
+   const data=Array.isArray(raw.data)?raw.data.map((x:any)=>({ref:String(x.Ref||''),number:String(x.Number||''),name:String(x.Description||''),shortAddress:String(x.ShortAddress||''),type:String(x.TypeOfWarehouse||''),category:String(x.CategoryOfWarehouse||'')})).filter((x:any)=>x.ref&&x.name):[];
    return Response.json({ok:Boolean(raw.success),data,errors:raw.errors||[]});
   }
 
