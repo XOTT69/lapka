@@ -2,6 +2,7 @@ export type ZooBazaProduct = {
   externalId: string;
   name: string;
   price: number;
+  b2bPrice?: number;
   oldPrice?: number;
   currency: string;
   categoryId?: string;
@@ -9,10 +10,15 @@ export type ZooBazaProduct = {
   vendor?: string;
   vendorCode?: string;
   picture?: string;
+  pictures?: string[];
   description?: string;
   available: boolean;
   url?: string;
   color?: string;
+  groupId?: string;
+  ean?: string;
+  weight?: string;
+  dimensions?: string;
   params?: Record<string,string>;
 };
 
@@ -25,6 +31,7 @@ const tag=(xml:string,name:string)=>{
  const m=xml.match(new RegExp('<'+name+'(?:\\s[^>]*)?>([\\s\\S]*?)<\\/'+name+'>','i'));
  return m?decode(m[1].trim()):'';
 };
+const tags=(xml:string,name:string)=>[...xml.matchAll(new RegExp('<'+name+'(?:\\s[^>]*)?>([\\s\\S]*?)<\\/'+name+'>','gi'))].map(m=>decode((m[1]||'').trim())).filter(Boolean);
 const attr=(xml:string,name:string)=>{
  const m=xml.match(new RegExp(name + "=[\\\"']([^\\\"']*)[\\\"']", "i"));
  return m?decode(m[1]):'';
@@ -41,6 +48,8 @@ function parseParams(offer:string){
  }
  return params;
 }
+
+const param=(params:Record<string,string>,re:RegExp)=>Object.entries(params).find(([k])=>re.test(k))?.[1]||'';
 
 function guessCategory(name:string,params:Record<string,string>){
  const source=(name+' '+Object.values(params).join(' ')).toLowerCase();
@@ -59,35 +68,51 @@ export function parseZooBazaXml(xml:string):ZooBazaProduct[]{
  return offers.map((offer,index)=>{
    const id=attr(offer,'id') || tag(offer,'vendorCode') || String(index+1);
    const availableAttr=attr(offer,'available');
-   const picture=tag(offer,'picture') || tag(offer,'image');
+   const pictures=[...new Set([...tags(offer,'picture'),...tags(offer,'image')])];
    const name=tag(offer,'name') || tag(offer,'model') || ('Товар '+id);
    const vendor=tag(offer,'vendor');
    const vendorCode=tag(offer,'vendorCode') || tag(offer,'article');
    const params=parseParams(offer);
-   const color=Object.entries(params).find(([k])=>/колір|цвет|color/i.test(k))?.[1];
+   const color=param(params,/колір|цвет|color/i);
+   const ean=tag(offer,'barcode')||tag(offer,'ean')||tag(offer,'EAN')||param(params,/ean|штрих|barcode/i);
+   const groupId=attr(offer,'group_id')||tag(offer,'group_id')||tag(offer,'groupId');
+   const weight=tag(offer,'weight')||param(params,/вага|вес|weight/i);
+   const dimensions=tag(offer,'dimensions')||param(params,/габарит|розмір упаков|размер упаков|dimension/i);
+   const publicPrice=number(tag(offer,'price'));
+   const b2bCandidates=[
+     tag(offer,'b2b_price'),tag(offer,'b2bPrice'),tag(offer,'purchase_price'),
+     tag(offer,'dealer_price'),tag(offer,'wholesale_price'),
+     param(params,/b2b|опт|закуп|ваша ціна|ваша цена/i)
+   ].map(number).filter(Boolean);
    return {
      externalId:id,
      name,
-     price:number(tag(offer,'price')),
+     price:publicPrice,
+     b2bPrice:b2bCandidates[0]||undefined,
      oldPrice:number(tag(offer,'oldprice'))||undefined,
      currency:tag(offer,'currencyId')||'UAH',
      categoryId:tag(offer,'categoryId')||undefined,
      category:guessCategory(name,params),
      vendor:vendor||undefined,
      vendorCode:vendorCode||undefined,
-     picture:picture||undefined,
+     picture:pictures[0],
+     pictures,
      description:tag(offer,'description')||undefined,
      available:availableAttr ? !/false|0|no/i.test(availableAttr) : true,
      url:tag(offer,'url')||undefined,
      color:color||undefined,
+     groupId:groupId||undefined,
+     ean:ean||undefined,
+     weight:weight||undefined,
+     dimensions:dimensions||undefined,
      params
    }
  }).filter(p=>p.name && p.price>0);
 }
 
 export async function getZooBazaProducts(limit=120){
- const url=process.env.ZOOBAZA_FEED_URL || 'https://basmati.com.ua/zoobaza_full.php';
- const res=await fetch(url,{next:{revalidate:1800},headers:{'user-agent':'LAPKA/1.0 catalog-sync'}});
+ const url=process.env.ZOOBAZA_FEED_URL || 'https://basmati.com.ua/zoobaza_drop_full.php';
+ const res=await fetch(url,{next:{revalidate:10800},headers:{'user-agent':'LAPKA/1.0 catalog-sync'}});
  if(!res.ok) throw new Error('Catalog feed HTTP '+res.status);
  const xml=await res.text();
  return parseZooBazaXml(xml).slice(0,limit);
