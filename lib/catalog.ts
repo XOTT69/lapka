@@ -2,7 +2,7 @@ export type CatalogProduct={
  externalId:string; sku:string; name:string; brand?:string; category?:string; categoryId?:string;
  price:number; oldPrice?:number; available:boolean; description?:string; picture?:string; pictures:string[];
  ean?:string; groupId?:string; weight?:string; dimensions?:string; color?:string; params:Record<string,string>;
- variantCount?:number; maxPrice?:number;
+ variantCount?:number; maxPrice?:number; syncedAt?:string;
 };
 
 export type CatalogFacets={categories:string[];brands:string[];colors:string[];minPrice:number;maxPrice:number};
@@ -22,7 +22,7 @@ export function mapCatalogRow(r:any):CatalogProduct{
   description:r.description||undefined,picture:r.image_url||undefined,pictures:Array.isArray(r.images)?r.images.filter(Boolean):[],
   ean:r.ean||undefined,groupId:r.group_id||undefined,weight:r.weight||undefined,dimensions:r.dimensions||undefined,
   color:r.color||undefined,params:r.params&&typeof r.params==='object'?r.params:{},
-  variantCount:r.variant_count?Number(r.variant_count):undefined,maxPrice:r.group_max_price?Number(r.group_max_price):undefined
+  variantCount:r.variant_count?Number(r.variant_count):undefined,maxPrice:r.group_max_price?Number(r.group_max_price):undefined,syncedAt:r.synced_at||undefined
  };
 }
 
