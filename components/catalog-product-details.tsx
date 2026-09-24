@@ -27,7 +27,7 @@ export default function CatalogProductDetails({product,variants,related}:{produc
     <div className="productBrandLine"><span>{product.brand||product.category||'LAPKA'}</span><button onClick={()=>toggleFavorite(favoriteKey)} className={liked?'active':''}><Heart size={19} fill={liked?'currentColor':'none'}/>{liked?'В обраному':'В обране'}</button></div>
     <h1>{product.name}</h1>
     <div className="productIdentifiers"><span>Код товару: <b>{product.sku}</b></span>{product.ean&&<span>EAN: {product.ean}</span>}</div>
-    <div className={product.available?'detailStock in':'detailStock'}><i></i>{product.available?'В наявності':'Під замовлення'}</div>
+    <div className={product.available?'detailStock in':'detailStock'}><i></i><span>{product.available?'В наявності':'Під замовлення'}{product.syncedAt&&<small>Оновлено {new Date(product.syncedAt).toLocaleString('uk-UA',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small>}</span></div>
 
     {variants.length>0&&<div className="variantSection"><div className="variantTitle">Колір / розмір</div><div className="variantLinks"><span className="active">{[product.color,product.params?.['Розмір']||product.weight].filter(Boolean).join(' · ')||product.sku}</span>{variants.map(v=><Link key={v.externalId} href={'/product/'+encodeURIComponent(v.externalId)}>{[v.color,v.params?.['Розмір']||v.weight].filter(Boolean).join(' · ')||v.sku}</Link>)}</div></div>}
 
