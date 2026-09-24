@@ -8,7 +8,7 @@ import NovaPoshtaPicker from '@/components/nova-poshta-picker';
 import {createClient} from '@/lib/supabase/client';
 
 export default function Checkout(){
- const {cart,total,setQty,remove,addOrder}=useStore();
+ const {cart,total,setQty,remove,addOrder,clearCart}=useStore();
  const [done,setDone]=useState<{id:string;method:'cod'|'bank_transfer'}|null>(null),[loading,setLoading]=useState(false),[payment,setPayment]=useState<'cod'|'bank_transfer'>('bank_transfer'),[error,setError]=useState('');
  const [contact,setContact]=useState({name:'',phone:'',email:''});
 
@@ -32,6 +32,12 @@ export default function Checkout(){
   const order=await orderRes.json();
   if(!orderRes.ok){setError(order.error||'Не вдалося створити замовлення');setLoading(false);return}
   addOrder({id:order.orderId,createdAt:new Date().toISOString(),total,items:cart.reduce((s,x)=>s+x.qty,0),status:payment==='bank_transfer'?'Очікує реквізити':'Прийнято'});
+  const s=createClient();
+  if(s){
+   const {data:{user}}=await s.auth.getUser();
+   if(user)await s.from('profiles').upsert({id:user.id,full_name:contact.name.trim(),phone:contact.phone.trim(),updated_at:new Date().toISOString()});
+  }
+  clearCart();
   setDone({id:order.orderId,method:payment});setLoading(false);
  };
 
