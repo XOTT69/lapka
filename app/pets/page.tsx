@@ -1,2 +1,1 @@
-import { redirect } from 'next/navigation';
-export default function Pets(){ redirect('/account#pet') }
+import {redirect} from 'next/navigation';export default function Pets(){redirect('/account#pets')}
