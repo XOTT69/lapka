@@ -1,13 +1,17 @@
 'use client';
 import Link from 'next/link';
-import { Heart, Home, PawPrint, ShoppingBag, UserRound } from 'lucide-react';
-import { usePathname } from 'next/navigation';
-import { useStore } from '@/lib/store';
+import {Heart,Home,PawPrint,ShoppingBag,UserRound} from 'lucide-react';
+import {usePathname} from 'next/navigation';
+import {useStore} from '@/lib/store';
 
 export default function MobileNav(){
- const path=usePathname(); const {count}=useStore();
- const item=(href:string,label:string,Icon:any)=>(
-  <Link className={path===href?'active':''} href={href}><Icon size={20}/><span>{label}</span>{href==='/checkout'&&count>0?<b>{count}</b>:null}</Link>
- );
- return <nav className="mobileNav">{item('/','Головна',Home)}{item('/catalog','Каталог',PawPrint)}{item('/catalog?favorites=1','Обране',Heart)}{item('/checkout','Кошик',ShoppingBag)}{item('/account','Профіль',UserRound)}</nav>
+ const path=usePathname(),{count,favorites}=useStore();
+ const items=[
+  ['/', 'Головна',Home,0],
+  ['/catalog','Каталог',PawPrint,0],
+  ['/favorites','Обране',Heart,favorites.length],
+  ['/checkout','Кошик',ShoppingBag,count],
+  ['/account','Профіль',UserRound,0]
+ ] as const;
+ return <nav className="mobileNav">{items.map(([href,label,Icon,badge])=><Link key={href} className={path===href?'active':''} href={href}><Icon size={20}/><span>{label}</span>{badge>0&&<b>{badge}</b>}</Link>)}</nav>
 }
