@@ -1,1 +1,2 @@
-import {redirect} from 'next/navigation';export default function LegacyCatalog(){redirect('/catalog')}
+import {redirect} from 'next/navigation';
+export default function LegacyCatalog(){redirect('/catalog')}
