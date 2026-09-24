@@ -1,6 +1,6 @@
 const suppliers=[
- {id:'zoobaza',name:'ZooBaza',format:'XML/YML',status:'connected',feed:'https://basmati.com.ua/zoobaza_full.php'},
- {id:'todli',name:'Todli B2B',format:'XML',status:'awaiting-feed'},
- {id:'collar',name:'COLLAR',format:'XML',status:'awaiting-feed'}
+ {id:'source_a',name:'Catalog source A',format:'XML/YML',status:'connected'},
+ {id:'source_b',name:'Catalog source B',format:'XML',status:'awaiting-feed'},
+ {id:'source_c',name:'Catalog source C',format:'XML',status:'awaiting-feed'}
 ];
-export async function GET(){return Response.json({suppliers,note:'ZooBaza connected. Other supplier feed URLs stay server-side once received.'})}
+export async function GET(){return Response.json({suppliers})}
