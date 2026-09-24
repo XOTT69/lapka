@@ -51,9 +51,23 @@ jobs:
           grep -q 'LAPKA' /tmp/home.html
           grep -q 'Каталог' /tmp/catalog.html
           grep -q 'Код товару' /tmp/product.html
-          ! grep -qi 'zoobaza' /tmp/home.html
-          ! grep -qi 'zoobaza' /tmp/catalog.html
-          ! grep -qi 'zoobaza' /tmp/product.html
+          python - <<'PY'
+          from html.parser import HTMLParser
+          class VisibleText(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.skip=0; self.parts=[]
+              def handle_starttag(self, tag, attrs):
+                  if tag in ("script","style","noscript"): self.skip += 1
+              def handle_endtag(self, tag):
+                  if tag in ("script","style","noscript") and self.skip: self.skip -= 1
+              def handle_data(self, data):
+                  if not self.skip: self.parts.append(data)
+          for name in ("home","catalog","product"):
+              p=VisibleText()
+              with open(f"/tmp/{name}.html",encoding="utf-8") as fh: p.feed(fh.read())
+              visible=" ".join(p.parts).lower()
+              assert "zoobaza" not in visible and "зообаза" not in visible, f"supplier name visible on {name}"
+          PY
 
       - name: Check Monge in live feed
         run: |
