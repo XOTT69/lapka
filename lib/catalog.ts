@@ -82,3 +82,14 @@ export async function getRelatedProducts(category?:string,exclude?:string){
  const rows=(await res.json()) as any[];
  return rows.map(mapCatalogRow).filter(x=>x.externalId!==exclude).slice(0,6);
 }
+
+
+export async function getCatalogProductsByIds(ids:string[]){
+ const safe=ids.map(x=>x.replace(/[(),]/g,'')).filter(Boolean).slice(0,80);
+ if(!safe.length)return [];
+ const p=new URLSearchParams({select:'*',external_id:'in.('+safe.join(',')+')',order:'updated_at.desc'});
+ const res=await fetch(URL+'/rest/v1/catalog_products?'+p.toString(),{headers,cache:'no-store'});
+ if(!res.ok)return [];
+ const rows=(await res.json()) as any[];
+ return rows.map(mapCatalogRow);
+}
