@@ -93,3 +93,17 @@ export async function getCatalogProductsByIds(ids:string[]){
  const rows=(await res.json()) as any[];
  return rows.map(mapCatalogRow);
 }
+
+
+export async function getCatalogSitemapRefs(){
+ const all:{externalId:string;updatedAt?:string}[]=[];
+ for(let offset=0;offset<5000;offset+=1000){
+  const p=new URLSearchParams({select:'external_id,updated_at',available:'eq.true',order:'external_id.asc',limit:'1000',offset:String(offset)});
+  const res=await fetch(URL+'/rest/v1/catalog_products?'+p.toString(),{headers,next:{revalidate:3600}});
+  if(!res.ok)break;
+  const rows=await res.json() as {external_id:string;updated_at?:string}[];
+  all.push(...rows.map(r=>({externalId:r.external_id,updatedAt:r.updated_at})));
+  if(rows.length<1000)break;
+ }
+ return all;
+}
