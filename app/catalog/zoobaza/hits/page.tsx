@@ -1,2 +1,1 @@
-import {redirect} from 'next/navigation';
-export default function LegacyPopular(){redirect('/popular')}
+import {redirect} from 'next/navigation';export default function LegacyPopular(){redirect('/catalog/popular')}
