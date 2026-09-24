@@ -2,6 +2,7 @@ export type CatalogProduct={
  externalId:string; sku:string; name:string; brand?:string; category?:string; categoryId?:string;
  price:number; oldPrice?:number; available:boolean; description?:string; picture?:string; pictures:string[];
  ean?:string; groupId?:string; weight?:string; dimensions?:string; color?:string; params:Record<string,string>;
+ variantCount?:number; maxPrice?:number;
 };
 
 export type CatalogFacets={categories:string[];brands:string[];colors:string[];minPrice:number;maxPrice:number};
@@ -17,10 +18,11 @@ export function mapCatalogRow(r:any):CatalogProduct{
  return {
   externalId:String(r.external_id||''),sku:String(r.sku||r.external_id||''),name:String(r.name||''),
   brand:r.brand||undefined,category:r.category||undefined,categoryId:r.category_id||undefined,
-  price:Number(r.price||0),oldPrice:r.old_price?Number(r.old_price):undefined,available:Boolean(r.available),
+  price:Number(r.group_min_price??r.price??0),oldPrice:r.old_price?Number(r.old_price):undefined,available:Boolean(r.available),
   description:r.description||undefined,picture:r.image_url||undefined,pictures:Array.isArray(r.images)?r.images.filter(Boolean):[],
   ean:r.ean||undefined,groupId:r.group_id||undefined,weight:r.weight||undefined,dimensions:r.dimensions||undefined,
-  color:r.color||undefined,params:r.params&&typeof r.params==='object'?r.params:{}
+  color:r.color||undefined,params:r.params&&typeof r.params==='object'?r.params:{},
+  variantCount:r.variant_count?Number(r.variant_count):undefined,maxPrice:r.group_max_price?Number(r.group_max_price):undefined
  };
 }
 
@@ -33,15 +35,15 @@ export async function getCatalogProducts(query:CatalogQuery={}){
  if(query.color)p.set('color','eq.'+query.color);
  if(query.min!=null)p.set('price','gte.'+query.min);
  if(query.max!=null)p.append('price','lte.'+query.max);
- if(query.q){
-  const q=clean(query.q);
-  if(q)p.set('or',`(name.ilike.*${q}*,sku.ilike.*${q}*,brand.ilike.*${q}*,ean.ilike.*${q}*,external_id.ilike.*${q}*)`);
- }
+ const q=query.q?clean(query.q):'';
+ if(q)p.set('or',`(name.ilike.*${q}*,sku.ilike.*${q}*,brand.ilike.*${q}*,ean.ilike.*${q}*,external_id.ilike.*${q}*)`);
+ const useRawVariants=Boolean(q||query.color);
+ const source=useRawVariants?'catalog_products':'catalog_listing';
  const sort=query.sort==='price-asc'?'price.asc':query.sort==='price-desc'?'price.desc':query.sort==='name'?'name.asc':'available.desc,updated_at.desc';
  p.set('order',sort);
  p.set('limit',String(query.limit??48));
  p.set('offset',String(query.offset??0));
- const res=await fetch(URL+'/rest/v1/catalog_products?'+p.toString(),{headers:{...headers,Prefer:'count=exact'},next:{revalidate:120}});
+ const res=await fetch(URL+'/rest/v1/'+source+'?'+p.toString(),{headers:{...headers,Prefer:'count=exact'},next:{revalidate:120}});
  if(!res.ok)throw new Error('Catalog DB '+res.status);
  const rows=await res.json();
  const range=res.headers.get('content-range')||'';
@@ -67,7 +69,7 @@ export async function getCatalogProduct(ref:string){return await getOne('externa
 
 export async function getCatalogVariants(groupId?:string,exclude?:string){
  if(!groupId)return [];
- const p=new URLSearchParams({select:'*',group_id:'eq.'+groupId,available:'eq.true',order:'price.asc',limit:'30'});
+ const p=new URLSearchParams({select:'*',group_id:'eq.'+groupId,available:'eq.true',order:'price.asc',limit:'100'});
  const res=await fetch(URL+'/rest/v1/catalog_products?'+p.toString(),{headers,next:{revalidate:120}});
  if(!res.ok)return [];
  const rows=(await res.json()) as any[];
@@ -77,7 +79,7 @@ export async function getCatalogVariants(groupId?:string,exclude?:string){
 export async function getRelatedProducts(category?:string,exclude?:string){
  if(!category)return [];
  const p=new URLSearchParams({select:'*',category:'eq.'+category,available:'eq.true',order:'updated_at.desc',limit:'8'});
- const res=await fetch(URL+'/rest/v1/catalog_products?'+p.toString(),{headers,next:{revalidate:120}});
+ const res=await fetch(URL+'/rest/v1/catalog_listing?'+p.toString(),{headers,next:{revalidate:120}});
  if(!res.ok)return [];
  const rows=(await res.json()) as any[];
  return rows.map(mapCatalogRow).filter(x=>x.externalId!==exclude).slice(0,6);
