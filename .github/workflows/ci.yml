@@ -28,9 +28,9 @@ jobs:
       - name: Runtime smoke test
         run: |
           set -euo pipefail
-          npm start > /tmp/lapka-next.log 2>&1 &
+          npm start > /tmp/importa-next.log 2>&1 &
           PID=$!
-          trap 'kill $PID 2>/dev/null || true; cat /tmp/lapka-next.log' EXIT
+          trap 'kill $PID 2>/dev/null || true; cat /tmp/importa-next.log' EXIT
 
           for i in {1..30}; do
             if curl -fsS http://127.0.0.1:3000/ >/tmp/home.html; then
@@ -48,9 +48,10 @@ jobs:
           test -n "$PRODUCT_ID"
           curl -fsS "http://127.0.0.1:3000/product/$PRODUCT_ID" >/tmp/product.html
 
-          grep -q 'LAPKA' /tmp/home.html
+          grep -q 'IMPORTA' /tmp/home.html
           grep -q 'Каталог' /tmp/catalog.html
           grep -q 'Код товару' /tmp/product.html
+
           python - <<'PY'
           from html.parser import HTMLParser
           class VisibleText(HTMLParser):
@@ -62,14 +63,11 @@ jobs:
                   if tag in ("script","style","noscript") and self.skip: self.skip -= 1
               def handle_data(self, data):
                   if not self.skip: self.parts.append(data)
+
           for name in ("home","catalog","product"):
               p=VisibleText()
               with open(f"/tmp/{name}.html",encoding="utf-8") as fh: p.feed(fh.read())
               visible=" ".join(p.parts).lower()
-              assert "zoobaza" not in visible and "зообаза" not in visible, f"supplier name visible on {name}"
+              assert "zoobaza" not in visible and "зообаза" not in visible, f"old supplier name visible on {name}"
+              assert "товари для собак" not in visible and "корм для кот" not in visible, f"old pet-store copy visible on {name}"
           PY
-
-      - name: Check Monge in live feed
-        run: |
-          COUNT=$(curl -L -s https://basmati.com.ua/zoobaza_full.php | grep -io 'monge' | wc -l || true)
-          echo "MONGE_COUNT=$COUNT"
