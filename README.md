@@ -1,35 +1,55 @@
-# LAPKA 🐾
+# IMPORTA 🍜🍫🍬
 
-Production-oriented MVP of a Ukrainian online pet store built with Next.js App Router.
+Online store for imported snacks and food, rebuilt from the former LAPKA pet-store MVP.
 
-## Implemented
+## Concept
+
+IMPORTA focuses on real imported products rather than a generic demo catalog:
+
+- Korean ramen and spicy food: Buldak, Nongshim
+- European chocolate and sweets
+- gummies, cookies and wafers
+- snacks and drinks
+- filters by category, brand and country/market
+- PWA storefront optimized for mobile
+
+## Current status
+
+The storefront is already reworked for imported food. The seed catalog contains real product names, but prices and availability are intentionally disabled until a real B2B supplier price list/feed is connected.
+
+This prevents fake prices, fake stock and accidental zero-price checkout.
+
+## Existing store infrastructure retained
+
+- Next.js App Router
 - responsive storefront
-- catalog with search/filter URLs and favorites
-- static SEO-friendly product pages
-- persistent cart, pet profile, favorites and local order history
-- checkout with cash-on-delivery flow
-- order API route
+- catalog, search, filters and favorites
+- product pages
+- persistent cart
+- checkout and local order history
 - admin dashboard
-- PWA manifest + icon
-- Nova Poshta API proxy (requires key)
-- supplier integration status API
-- GitHub Actions build validation
-- Vercel-ready deployment
+- Nova Poshta proxy
+- Supabase groundwork
+- PWA
+- Vercel deployment
+- GitHub Actions validation
 
-## Run locally
+## Supplier onboarding
+
+See [SUPPLIERS.md](./SUPPLIERS.md).
+
+The preferred production flow is:
+
+1. receive CSV/XLSX/XML/YML/API feed from an importer;
+2. normalize SKU, EAN, title, brand, country, image, cost, stock and expiry;
+3. calculate retail price using pricing rules;
+4. sync into the catalog database;
+5. publish only products with confirmed price and stock.
+
+## Development
+
 ```bash
 npm install
 npm run dev
+npm run build
 ```
-
-## Environment variables
-Copy `.env.example` to `.env.local`.
-
-Real Nova Poshta, supplier-feed and payment credentials must be added as encrypted Vercel Environment Variables, never committed to GitHub.
-
-## Next production integrations
-1. Obtain XML/YML feed URLs from ZooBaza, Todli and COLLAR.
-2. Add supplier secrets to Vercel.
-3. Add a persistent database for customers/orders/catalog sync.
-4. Add merchant credentials for online payment.
-5. Protect /admin with authentication.
