@@ -9,9 +9,9 @@ export async function GET(req:Request){
    return Response.json({items,total:items.length},{headers:{'cache-control':'private, max-age=30'}});
   }
   const result=await getCatalogProducts({
-   q:s.get('q')||undefined,category:s.get('category')||undefined,brand:s.get('brand')||undefined,color:s.get('color')||undefined,
+   q:s.get('q')||undefined,category:s.get('category')||undefined,brand:s.get('brand')||undefined,country:s.get('country')||undefined,
    min:s.get('min')?Number(s.get('min')):undefined,max:s.get('max')?Number(s.get('max')):undefined,
-   available:s.get('available')!=='false',sort:s.get('sort')||undefined,
+   available:s.get('available')==='true',sort:s.get('sort')||undefined,
    limit:Math.min(Number(s.get('limit')||48),60),offset:Math.max(Number(s.get('offset')||0),0)
   });
   return Response.json(result,{headers:{'cache-control':'public, s-maxage=60, stale-while-revalidate=300'}});

@@ -1,0 +1,64 @@
+{
+  "as_of": "2026-10-07",
+  "suppliers": [
+    {
+      "id": "cenaoptom",
+      "name": "SALUTE / CenaOptom",
+      "country": "Ukraine",
+      "email": "info@cenaoptom.com.ua",
+      "phone": "+380963909890",
+      "website": "https://www.cenaoptom.com.ua/",
+      "status": "gmail_draft_prepared",
+      "priority": 1
+    },
+    {
+      "id": "playberry",
+      "name": "PlayBerry Ukraine",
+      "country": "Ukraine",
+      "email": "playberry.ua@gmail.com",
+      "phone": "+380681232277",
+      "website": "https://playberry.com.ua/",
+      "status": "gmail_draft_prepared",
+      "priority": 2
+    },
+    {
+      "id": "green-distribution",
+      "name": "Green Distribution",
+      "country": "Latvia / Poland",
+      "email": "info@greendistribution.eu",
+      "phone": "+37127344244 / +48730715527",
+      "website": "https://www.greendistribution.eu/",
+      "status": "gmail_draft_prepared",
+      "priority": 1,
+      "notes": "Official Samyang distributor for the Baltic States; ask about Ukraine supply/referral."
+    },
+    {
+      "id": "eurobrands",
+      "name": "EUROBRANDS Lebensmittelgroßhandel",
+      "country": "Germany",
+      "email": "info@eu-brands.de",
+      "phone": "+4922129804855",
+      "website": "https://www.eu-brands.de/en/",
+      "status": "gmail_draft_prepared",
+      "priority": 3
+    },
+    {
+      "id": "storefood",
+      "name": "Store Food Distribution",
+      "country": "Ukraine",
+      "phone": "+380665821956",
+      "website": "https://storefood.com.ua/",
+      "status": "price_form_or_phone",
+      "priority": 2
+    },
+    {
+      "id": "samyang-europe",
+      "name": "Samyang Foods Europe B.V.",
+      "country": "Netherlands",
+      "phone": "+31880309400",
+      "website": "https://www.samyangfoods.com/eng/information/corporation/index.do",
+      "status": "phone_or_official_referral",
+      "priority": 1
+    }
+  ]
+}

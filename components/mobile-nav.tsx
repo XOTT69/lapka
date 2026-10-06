@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import {Heart,Home,PawPrint,ShoppingBag,UserRound} from 'lucide-react';
+import {Heart,Home,Package,ShoppingBag,UserRound} from 'lucide-react';
 import {usePathname} from 'next/navigation';
 import {useStore} from '@/lib/store';
 
@@ -8,7 +8,7 @@ export default function MobileNav(){
  const path=usePathname(),{count,favorites}=useStore();
  const items=[
   ['/', 'Головна',Home,0],
-  ['/catalog','Каталог',PawPrint,0],
+  ['/catalog','Каталог',Package,0],
   ['/favorites','Обране',Heart,favorites.length],
   ['/checkout','Кошик',ShoppingBag,count],
   ['/account','Профіль',UserRound,0]

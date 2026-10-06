@@ -13,41 +13,17 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
  const {slug}=await params;
  const p=await getCatalogProduct(decodeURIComponent(slug));
  if(!p)return {title:'Товар не знайдено'};
- const description=(p.description||((p.category||'Зоотовар')+' у LAPKA. Код товару: '+p.sku)).slice(0,160);
+ const description=(p.description||((p.category||'Імпортний продукт')+' в IMPORTA. Код товару: '+p.sku)).slice(0,160);
  const url=SITE+'/product/'+encodeURIComponent(p.externalId);
- return {
-  title:p.name,
-  description,
-  alternates:{canonical:url},
-  openGraph:{type:'website',title:p.name,description,url,images:p.picture?[{url:p.picture,alt:p.name}]:undefined},
-  twitter:{card:'summary_large_image',title:p.name,description,images:p.picture?[p.picture]:undefined}
- };
+ return {title:p.name,description,alternates:{canonical:url},openGraph:{type:'website',title:p.name,description,url,images:p.picture?[{url:p.picture,alt:p.name}]:undefined},twitter:{card:'summary_large_image',title:p.name,description,images:p.picture?[p.picture]:undefined}};
 }
 
 export default async function ProductPage({params}:{params:Promise<{slug:string}>}){
  const {slug}=await params;
  const product=await getCatalogProduct(decodeURIComponent(slug));
  if(!product)notFound();
- const [variants,related,reviews]=await Promise.all([
-  getCatalogVariants(product.groupId,product.externalId),
-  getRelatedProducts(product.category,product.externalId),
-  getProductReviews(product.externalId)
- ]);
+ const [variants,related,reviews]=await Promise.all([getCatalogVariants(product.groupId,product.externalId),getRelatedProducts(product.category,product.externalId),getProductReviews(product.externalId)]);
  const url=SITE+'/product/'+encodeURIComponent(product.externalId);
- const jsonLd={
-  '@context':'https://schema.org','@type':'Product',
-  name:product.name,
-  image:product.pictures.length?product.pictures:product.picture?[product.picture]:undefined,
-  description:product.description||undefined,
-  sku:product.sku,
-  gtin13:product.ean&&/^\d{13}$/.test(product.ean)?product.ean:undefined,
-  brand:product.brand?{'@type':'Brand',name:product.brand}:undefined,
-  offers:{'@type':'Offer',url,priceCurrency:'UAH',price:product.price,availability:product.available?'https://schema.org/InStock':'https://schema.org/OutOfStock'},
-  ...(reviews.length?{aggregateRating:{'@type':'AggregateRating',ratingValue:(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1),reviewCount:reviews.length}}:{})
- };
- return <main className="wrap page productPageWrap">
-  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd).replace(/</g,'\\u003c')}}/>
-  <nav className="breadcrumbs"><Link href="/">Головна</Link><span>/</span><Link href="/catalog">Каталог</Link><span>/</span><span>{product.category||'Товар'}</span></nav>
-  <CatalogProductDetails product={product} variants={variants} related={related}/><ProductReviews productExternalId={product.externalId} initial={reviews}/>
- </main>
+ const jsonLd={'@context':'https://schema.org','@type':'Product',name:product.name,image:product.pictures.length?product.pictures:product.picture?[product.picture]:undefined,description:product.description||undefined,sku:product.sku,brand:product.brand?{'@type':'Brand',name:product.brand}:undefined,...(product.price>0?{offers:{'@type':'Offer',url,priceCurrency:'UAH',price:product.price,availability:product.available?'https://schema.org/InStock':'https://schema.org/OutOfStock'}}:{}),...(reviews.length?{aggregateRating:{'@type':'AggregateRating',ratingValue:(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1),reviewCount:reviews.length}}:{})};
+ return <main className="wrap page productPageWrap"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(jsonLd).replace(/</g,'\\u003c')}}/><nav className="breadcrumbs"><Link href="/">Головна</Link><span>/</span><Link href="/catalog">Каталог</Link><span>/</span><span>{product.category||'Товар'}</span></nav><CatalogProductDetails product={product} variants={variants} related={related}/><ProductReviews productExternalId={product.externalId} initial={reviews}/></main>
 }

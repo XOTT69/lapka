@@ -1,0 +1,99 @@
+{
+  "as_of": "2026-10-07",
+  "currency": "UAH",
+  "notes": "Public wholesale benchmarks only. Confirm before publishing or ordering.",
+  "suppliers": [
+    {
+      "id": "cenaoptom",
+      "name": "SALUTE / CenaOptom",
+      "url": "https://www.cenaoptom.com.ua/",
+      "minimum_order_uah": 3000,
+      "items": [
+        {
+          "name": "Ritter Sport assorted 100 g",
+          "unit_price": 62,
+          "carton_qty": 30
+        },
+        {
+          "name": "Haribo Harry Potter 160 g",
+          "unit_price": 55,
+          "carton_qty": 10
+        },
+        {
+          "name": "Haribo Roulette 25 g",
+          "unit_price": 10,
+          "carton_qty": 50
+        },
+        {
+          "name": "Capri-Sun 200 ml",
+          "unit_price": 15.5,
+          "carton_only": true
+        },
+        {
+          "name": "Nutella & Go 52 g",
+          "unit_price": 66,
+          "carton_qty": 12
+        },
+        {
+          "name": "Kinder Joy",
+          "unit_price": 43,
+          "carton_qty": 72
+        },
+        {
+          "name": "Raffaello 150 g",
+          "unit_price": 152,
+          "carton_qty": 6
+        }
+      ]
+    },
+    {
+      "id": "evrocash",
+      "name": "EVROCASH",
+      "url": "https://evrocashopt.com.ua/",
+      "minimum_order_uah": 10000,
+      "items": [
+        {
+          "name": "Samyang Buldak Black 140 g",
+          "unit_price": 77,
+          "available": false
+        },
+        {
+          "name": "Samyang Buldak 2X Spicy 140 g",
+          "unit_price": 75,
+          "available": false
+        },
+        {
+          "name": "Samyang Hot Chicken Cheese 140 g",
+          "unit_price": 98,
+          "available": false
+        },
+        {
+          "name": "Ritter Sport Erdbeer Joghurt 100 g",
+          "unit_price": 55,
+          "carton_qty": 12,
+          "available": false
+        },
+        {
+          "name": "Haribo Roulette 25 g",
+          "unit_price": 12,
+          "carton_qty": 50,
+          "available": false
+        }
+      ]
+    },
+    {
+      "id": "egastronom",
+      "name": "EGastronom",
+      "url": "https://egastronom.com.ua/",
+      "minimum_order_uah": 750,
+      "items": [
+        {
+          "name": "Buldak Rose 140 g",
+          "unit_price": 121,
+          "minimum_qty": 40,
+          "available": true
+        }
+      ]
+    }
+  ]
+}

@@ -2,9 +2,9 @@ import type {MetadataRoute} from 'next';
 
 export default function manifest():MetadataRoute.Manifest{
  return {
-  name:'LAPKA — зоотовари для собак і котів',
-  short_name:'LAPKA',
-  description:'Корми, переноски, лежаки, одяг та аксесуари для собак і котів.',
+  name:'IMPORTA — імпортні смаколики',
+  short_name:'IMPORTA',
+  description:'Рамен, шоколад, желейки, вафлі, снеки й напої з Європи, Кореї та інших країн.',
   start_url:'/',
   display:'standalone',
   background_color:'#f6f7f5',

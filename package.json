@@ -1,11 +1,12 @@
 {
-  "name": "lapka-pet-store",
+  "name": "importa-store",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "import:supplier": "node scripts/import-supplier-feed.mjs"
   },
   "dependencies": {
     "next": "16.3.6",
