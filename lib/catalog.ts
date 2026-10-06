@@ -62,7 +62,7 @@ export async function getCatalogFacets():Promise<CatalogFacets>{
 }
 
 export async function getCatalogProduct(ref:string){return seed.find(p=>p.externalId===ref||p.sku===ref)||null}
-export async function getCatalogVariants(){return [] as CatalogProduct[]}
+export async function getCatalogVariants(_groupId?:string,_exclude?:string){return [] as CatalogProduct[]}
 export async function getRelatedProducts(category?:string,exclude?:string){return seed.filter(p=>p.category===category&&p.externalId!==exclude).slice(0,6)}
 export async function getCatalogProductsByIds(ids:string[]){const set=new Set(ids);return seed.filter(p=>set.has(p.externalId))}
 export async function getCatalogSitemapRefs(){return seed.map(p=>({externalId:p.externalId,updatedAt:p.syncedAt}))}
