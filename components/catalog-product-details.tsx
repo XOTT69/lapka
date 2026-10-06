@@ -12,37 +12,31 @@ export default function CatalogProductDetails({product,variants,related}:{produc
  const gallery=useMemo(()=>[...new Set([product.picture,...product.pictures].filter(Boolean) as string[])],[product]);
  const [active,setActive]=useState(gallery[0]||''),[qty,setQty]=useState(1);
  const {add,favorites,toggleFavorite}=useStore();
- const favoriteKey=product.externalId,liked=favorites.includes(favoriteKey);
+ const favoriteKey=product.externalId,liked=favorites.includes(favoriteKey),purchasable=product.available&&product.price>0;
  const characteristics=Object.entries(product.params||{}).filter(([k,v])=>k&&v&&String(v).length<120).slice(0,18);
- const addMany=()=>{const p=catalogToStoreProduct(product);for(let i=0;i<qty;i++)add(p)};
+ const addMany=()=>{if(!purchasable)return;const p=catalogToStoreProduct(product);for(let i=0;i<qty;i++)add(p)};
 
  return <div className="productPageNew">
   <div className="productTop">
    <section className="productGallery">
     <div className="thumbRail">{gallery.map((src,i)=><button key={src} className={active===src?'active':''} onClick={()=>setActive(src)} aria-label={'Фото '+(i+1)}><Image src={src} alt="" fill sizes="72px"/></button>)}</div>
-    <div className="mainProductImage">{active?<Image src={active} alt={product.name} fill priority sizes="(max-width:900px) 100vw,50vw"/>:<div className="productImageFallback">LAPKA</div>}</div>
+    <div className="mainProductImage">{active?<Image src={active} alt={product.name} fill priority sizes="(max-width:900px) 100vw,50vw"/>:<div className="productImageFallback">{product.brand||'IMPORTA'}</div>}</div>
    </section>
-
    <section className="productSummary">
-    <div className="productBrandLine"><span>{product.brand||product.category||'LAPKA'}</span><button onClick={()=>toggleFavorite(favoriteKey)} className={liked?'active':''}><Heart size={19} fill={liked?'currentColor':'none'}/>{liked?'В обраному':'В обране'}</button></div>
+    <div className="productBrandLine"><span>{[product.brand,product.country].filter(Boolean).join(' · ')||'IMPORTA'}</span><button onClick={()=>toggleFavorite(favoriteKey)} className={liked?'active':''}><Heart size={19} fill={liked?'currentColor':'none'}/>{liked?'В обраному':'В обране'}</button></div>
     <h1>{product.name}</h1>
     <div className="productIdentifiers"><span>Код товару: <b>{product.sku}</b></span>{product.ean&&<span>EAN: {product.ean}</span>}</div>
-    <div className={product.available?'detailStock in':'detailStock'}><i></i><span>{product.available?'В наявності':'Під замовлення'}{product.syncedAt&&<small>Оновлено {new Date(product.syncedAt).toLocaleString('uk-UA',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</small>}</span></div>
-
-    {variants.length>0&&<div className="variantSection"><div className="variantTitle">Колір / розмір</div><div className="variantLinks"><span className="active">{[product.color,product.params?.['Розмір']||product.weight].filter(Boolean).join(' · ')||product.sku}</span>{variants.map(v=><Link key={v.externalId} href={'/product/'+encodeURIComponent(v.externalId)}>{[v.color,v.params?.['Розмір']||v.weight].filter(Boolean).join(' · ')||v.sku}</Link>)}</div></div>}
-
-    <div className="detailPrice">{product.oldPrice&&<del>{money(product.oldPrice)}</del>}<strong>{money(product.price)}</strong></div>
-    <div className="purchaseRow"><div className="qtyControl"><button onClick={()=>setQty(v=>Math.max(1,v-1))}><Minus size={16}/></button><b>{qty}</b><button onClick={()=>setQty(v=>Math.min(20,v+1))}><Plus size={16}/></button></div><button className="button primary addToCart" disabled={!product.available} onClick={addMany}><ShoppingCart size={19}/>{product.available?'Додати в кошик':'Тимчасово немає'}</button></div>
-
-    <div className="purchaseInfo"><Link href="/delivery-payment"><Truck size={19}/><span><b>Нова пошта</b>Умови доставки та оплати</span></Link><Link href="/returns"><Undo2 size={19}/><span><b>Обмін і повернення</b>Перевірити умови для цієї категорії</span></Link><div><WalletCards size={19}/><span><b>Оплата</b>При отриманні або за реквізитами після підтвердження</span></div></div>
+    <div className={purchasable?'detailStock in':'detailStock'}><i></i><span>{purchasable?'В наявності':'Очікуємо гуртовий прайс'}<small>{purchasable?'Можна замовляти':'Не вигадуємо ціну та залишок — підключаємо реального постачальника'}</small></span></div>
+    {variants.length>0&&<div className="variantSection"><div className="variantTitle">Варіанти</div><div className="variantLinks">{variants.map(v=><Link key={v.externalId} href={'/product/'+encodeURIComponent(v.externalId)}>{v.weight||v.sku}</Link>)}</div></div>}
+    <div className="detailPrice">{product.price>0?<>{product.oldPrice&&<del>{money(product.oldPrice)}</del>}<strong>{money(product.price)}</strong></>:<strong>Ціна після B2B-прайсу</strong>}</div>
+    <div className="purchaseRow"><div className="qtyControl"><button disabled={!purchasable} onClick={()=>setQty(v=>Math.max(1,v-1))}><Minus size={16}/></button><b>{qty}</b><button disabled={!purchasable} onClick={()=>setQty(v=>Math.min(20,v+1))}><Plus size={16}/></button></div><button className="button primary addToCart" disabled={!purchasable} onClick={addMany}><ShoppingCart size={19}/>{purchasable?'Додати в кошик':'Продаж ще не відкрито'}</button></div>
+    <div className="purchaseInfo"><Link href="/delivery-payment"><Truck size={19}/><span><b>Нова пошта</b>Умови доставки та оплати</span></Link><Link href="/returns"><Undo2 size={19}/><span><b>Повернення</b>Умови для харчових товарів</span></Link><div><WalletCards size={19}/><span><b>Оплата</b>Після підтвердження ціни та наявності</span></div></div>
    </section>
   </div>
-
   <div className="productInfoSections">
    <section><h2>Опис</h2><p>{product.description||'Опис цього товару уточнюється.'}</p></section>
-   <section><h2>Характеристики</h2><div className="specTable"><div><span>Код товару</span><b>{product.sku}</b></div>{product.brand&&<div><span>Бренд</span><b>{product.brand}</b></div>}{product.category&&<div><span>Категорія</span><b>{product.category}</b></div>}{product.weight&&<div><span>Вага</span><b>{product.weight}</b></div>}{product.dimensions&&<div><span>Габарити</span><b>{product.dimensions}</b></div>}{product.color&&<div><span>Колір</span><b>{product.color}</b></div>}{product.ean&&<div><span>EAN</span><b>{product.ean}</b></div>}{characteristics.map(([k,v])=><div key={k}><span>{k}</span><b>{String(v)}</b></div>)}</div></section>
+   <section><h2>Характеристики</h2><div className="specTable"><div><span>Код товару</span><b>{product.sku}</b></div>{product.brand&&<div><span>Бренд</span><b>{product.brand}</b></div>}{product.category&&<div><span>Категорія</span><b>{product.category}</b></div>}{product.country&&<div><span>Країна / ринок</span><b>{product.country}</b></div>}{product.weight&&<div><span>Вага / об’єм</span><b>{product.weight}</b></div>}{product.ean&&<div><span>EAN</span><b>{product.ean}</b></div>}{characteristics.map(([k,v])=><div key={k}><span>{k}</span><b>{String(v)}</b></div>)}</div></section>
   </div>
-
-  {related.length>0&&<section className="relatedSection"><div className="sectionTitleRow"><div><span>Може підійти</span><h2>Схожі товари</h2></div><Link href={'/catalog?category='+encodeURIComponent(product.category||'')}>Усі в категорії</Link></div><ProductGrid items={related}/></section>}
+  {related.length>0&&<section className="relatedSection"><div className="sectionTitleRow"><div><span>Ще в категорії</span><h2>Схожі товари</h2></div><Link href={'/catalog?category='+encodeURIComponent(product.category||'')}>Усі в категорії</Link></div><ProductGrid items={related}/></section>}
  </div>
 }
