@@ -1,0 +1,83 @@
+{
+  "as_of": "2026-10-07",
+  "status": "research_only_do_not_order_without_confirmation",
+  "supplier": "SALUTE / CenaOptom",
+  "supplier_minimum_order_uah": 3000,
+  "rationale": "Maximum assortment breadth around supplier MOQ using public wholesale prices; all prices/stock must be reconfirmed before purchase.",
+  "items": [
+    {
+      "sku_hint": "Fini Sour Tongues 100g",
+      "qty": 12,
+      "unit_cost_uah": 35,
+      "carton_qty": 12,
+      "line_cost_uah": 420,
+      "category": "Желейні цукерки"
+    },
+    {
+      "sku_hint": "Fini Sour Pencils 100g",
+      "qty": 12,
+      "unit_cost_uah": 35,
+      "carton_qty": 12,
+      "line_cost_uah": 420,
+      "category": "Желейні цукерки"
+    },
+    {
+      "sku_hint": "Fini Rainbow Tongues 100g",
+      "qty": 12,
+      "unit_cost_uah": 35,
+      "carton_qty": 12,
+      "line_cost_uah": 420,
+      "category": "Желейні цукерки"
+    },
+    {
+      "sku_hint": "Fini Watermelon Slices 100g",
+      "qty": 12,
+      "unit_cost_uah": 35,
+      "carton_qty": 12,
+      "line_cost_uah": 420,
+      "category": "Желейні цукерки"
+    },
+    {
+      "sku_hint": "Haribo Harry Potter 160g",
+      "qty": 10,
+      "unit_cost_uah": 55,
+      "carton_qty": 10,
+      "line_cost_uah": 550,
+      "category": "Желейні цукерки"
+    },
+    {
+      "sku_hint": "Capri-Sun Multi Vitamin 200ml",
+      "qty": 10,
+      "unit_cost_uah": 15.5,
+      "carton_qty": 10,
+      "line_cost_uah": 155,
+      "category": "Напої"
+    },
+    {
+      "sku_hint": "Capri-Sun Orange 200ml",
+      "qty": 10,
+      "unit_cost_uah": 15.5,
+      "carton_qty": 10,
+      "line_cost_uah": 155,
+      "category": "Напої"
+    },
+    {
+      "sku_hint": "Nutella & Go 52g",
+      "qty": 12,
+      "unit_cost_uah": 66,
+      "carton_qty": 12,
+      "line_cost_uah": 792,
+      "category": "Намазки / перекус"
+    }
+  ],
+  "totals": {
+    "units": 90,
+    "skus": 8,
+    "goods_cost_uah": 3332
+  },
+  "notes": [
+    "This is a test basket, not an order.",
+    "Confirm stock, expiry dates, importer labels and current prices before payment.",
+    "Buldak should be sourced separately from an authorized/traceable Samyang channel."
+  ]
+}
