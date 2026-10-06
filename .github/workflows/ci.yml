@@ -25,6 +25,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Supplier feed parser smoke test
+        run: |
+          npm run import:supplier -- data/supplier-feed-template.csv ci-test /tmp/importa-feed.json
+          node -e "const x=require('/tmp/importa-feed.json'); if(x.normalized_rows!==1) process.exit(1);"
+
+
       - name: Runtime smoke test
         run: |
           set -euo pipefail
