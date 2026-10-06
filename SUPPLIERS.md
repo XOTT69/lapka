@@ -73,3 +73,32 @@
 6. Capri-Sun / Sanpellegrino та незвичні імпортні напої.
 
 Після отримання першого прайсу товари з підтвердженою закупівельною ціною і залишком переводимо у `available=true` та розраховуємо продажну ціну.
+
+
+## 5. Green Distribution — Samyang / Buldak
+
+- https://www.greendistribution.eu/
+- GREEN DISTRIBUTION SIA, Riga, Latvia + польська компанія/склад.
+- Публічно заявляють ексклюзивну дистрибуційну угоду з Samyang Foods для Балтійських країн.
+- Мають Buldak, Tangle та інші Samyang SKU.
+- Контакт: info@greendistribution.eu, +371 27344244, +48 730 715 527.
+- Потрібно уточнити: чи можуть постачати в Україну або направити до авторизованого каналу для України; B2B-прайс, MOQ, логістику з Польщі та export docs.
+
+## 6. EUROBRANDS Lebensmittelgroßhandel
+
+- https://www.eu-brands.de/en/
+- Німецький гуртовик branded confectionery.
+- Портфель включає Ritter Sport, Milka, Ferrero, Loacker, Lotus, Haribo, Trolli, Oreo та багато інших брендів.
+- Контакт: info@eu-brands.de, +49 221 298 048 55.
+- Використовувати після перевірки економіки прямого імпорту з ЄС: мінімальне замовлення, доставка, митне оформлення, сертифікація/маркування та залишковий термін.
+
+## Технічний імпорт прайсів
+
+У репозиторії є:
+
+- `data/supplier-feed-template.csv` — наш бажаний формат.
+- `scripts/import-supplier-feed.mjs` — нормалізатор CSV/XLSX.
+- команда: `npm run import:supplier -- path/to/feed.xlsx supplier-id`.
+- `data/supplier-contacts.json` — статус контактів.
+
+Нормалізатор не публікує товар автоматично. Позиція має отримати підтверджену закупівельну ціну та позитивний залишок перед відкриттям продажу.
