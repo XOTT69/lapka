@@ -14,20 +14,20 @@ export function catalogToStoreProduct(p:CatalogProduct):Product{
   id:productHash('catalog-'+p.externalId),
   slug:p.externalId,
   name:p.name,
-  brand:p.brand||p.category||'LAPKA',
+  brand:p.brand||p.category||'IMPORTA',
   category:p.category||'Каталог',
   pet:inferPetType(p),
   price:p.price,
   oldPrice:p.oldPrice,
-  emoji:'🐾',
+  emoji:'🍬',
   image:p.picture,
-  description:p.description||'Товар із актуального каталогу.',
+  description:p.description||'Імпортний продукт із каталогу IMPORTA.',
   stock:p.available?1:0,
   weight:p.weight,
   features:[
    'Код товару: '+p.sku,
    p.ean?'EAN: '+p.ean:'',
-   p.color?'Колір: '+p.color:'',
+   p.country?'Країна / ринок: '+p.country:'',
    p.dimensions?'Габарити: '+p.dimensions:''
   ].filter(Boolean)
  };
